@@ -1,5 +1,5 @@
 
-# Time-stamp: "2000-05-20 18:22:07 MDT"
+# Time-stamp: "2000-08-21 15:32:41 MDT"
 require 5;
 package MIDI;
 use strict;
@@ -12,7 +12,7 @@ use MIDI::Score;
 # Doesn't use MIDI::Simple -- but MIDI::Simple uses this
 
 $Debug = 0; # currently doesn't do anything
-$VERSION = 0.77;
+$VERSION = 0.78;
 
 # MIDI.pm doesn't do much other than 1) 'use' all the necessary submodules
 # 2) provide some publicly useful hashes, 3) house a few private routines

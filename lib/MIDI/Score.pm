@@ -1,12 +1,12 @@
 
-# Time-stamp: "2000-05-20 18:14:06 MDT"
+# Time-stamp: "2000-08-21 15:32:57 MDT"
 require 5;
 package MIDI::Score;
 use strict;
 use vars qw($Debug $VERSION);
 use Carp;
 
-$VERSION = 0.77;
+$VERSION = 0.78;
 
 =head1 NAME
 

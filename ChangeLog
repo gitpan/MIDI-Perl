@@ -1,6 +1,22 @@
 Revision history for Perl suite MIDI-Perl
-                                        Time-stamp: "2000-05-20 18:21:17 MDT"
+                                        Time-stamp: "2000-08-21 15:38:59 MDT"
 
+2000-08-21  Sean M. Burke  sburke@cpan.org
+
+	* Release 0.78
+
+	* Fixed odd bug in MIDI::Score that would prematurely terminate a
+	pending note on one channel if you started (or ended) a note with
+	the same note number on a different channel.
+
+	New logic assumes (safely, I think) that you can only have one
+	note at a time per note-number per channel.  (I.e., you can't
+	start a C5 on channel 3, wait a second, start another C5 on
+	channel 3, and have them both going at the same time.  I think
+	that if you start a C5 on channel 3, then start another, the
+	second will implicitly end the first.  Please do email me if you
+	think this is non-standard behavior for a sequencer.)
+	
 2000-05-20  Sean M. Burke  sburke@cpan.org
 
 	* Release 0.77
