@@ -1,8 +1,11 @@
-                                        Time-stamp: "1998-08-14 00:04:30 MDT"
+                                        Time-stamp: "1998-08-14 09:11:45 MDT"
 
 1998-08-13  Sean M. Burke  sburke@netadventure.net
 
 	* Release 0.51!  First CPAN release.  Get it while it's hot!
 
-	
-	
+1998-08-14  Sean M. Burke  sburke@netadventure.net
+
+	* Release 0.52:  makefile fix.  chimes example in MIDI.pm
+
+		

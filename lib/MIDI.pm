@@ -1,12 +1,12 @@
 ###########################################################################
-# Time-stamp: "1998-08-13 23:34:46 MDT"
+# Time-stamp: "1998-08-14 09:10:44 MDT"
 package MIDI;
 use MIDI::Opus;
 use MIDI::Track;
 use MIDI::Event;
 
 $Debug = 0; # currently doesn't do anything
-$VERSION = 0.51;
+$VERSION = 0.52;
 
 # MIDI.pm doesn't do much other than 1) 'use' all the necessary submodules
 # 2) provide some publicly useful hashes, 3) house a few private routines
@@ -19,8 +19,20 @@ MIDI -- read, compose, modify, and write MIDI files.
 =head1 SYNOPSIS
 
  use MIDI;
- $opus = MIDI::Opus->new;
- ...etc...
+ $chimes_track = MIDI::Track->new({ 'events' => [
+  ['text_event',0, 'www.ely.anglican.org/parishes/camgsm/chimes.html'],
+  ['text_event',0, 'Lord through this hour/ be Thou our guide'],
+  ['text_event',0, 'so, by Thy power/ no foot shall slide'],
+  ['text_event',0, '(coded at ' . scalar(localtime) . ' )'],
+  ['patch_change', 0, 1, 8], # Patch 8 = Celesta
+  map( (['note_on',0,1,$_->[0],96], ['note_off',$_->[1],1,$_->[0],0]),
+       [25,96],[29,96],[27,96],[20,192],[25,96],[27,96],[29,96],[25,192],
+       [29,96],[25,96],[27,96],[20,192],[20,96],[27,96],[29,96],[25,192],
+     )# [Note,Duration] ==> ['note_on',0,1, N ,96], ['note_off', D ,1, N ,0]
+ ] });
+ $chimes = MIDI::Opus->new(
+  { 'format' => 0, 'ticks' => 96, 'tracks' => [ $chimes_track ] } );
+ $chimes->write_to_file('chimes.mid');
 
 =head1 DESCRIPTION
 

@@ -42,9 +42,9 @@ AR_STATIC_ARGS = cr
 NAME = MIDI-Perl
 DISTNAME = MIDI-Perl
 NAME_SYM = MIDI_Perl
-VERSION = 0.51
-VERSION_SYM = 0_51
-XS_VERSION = 0.51
+VERSION = 0.52
+VERSION_SYM = 0_52
+XS_VERSION = 0.52
 INST_BIN = ./blib/bin
 INST_EXE = ./blib/script
 INST_LIB = ./blib/lib
@@ -144,13 +144,10 @@ TO_INST_PM = lib/MIDI.pm \
 	lib/MIDI/Event.pm \
 	lib/MIDI/Filespec.pod \
 	lib/MIDI/Opus.pm \
-	lib/MIDI/Track.pm \
-	makefile.pl
+	lib/MIDI/Track.pm
 
 PM_TO_BLIB = lib/MIDI/Track.pm \
 	$(INST_LIB)/MIDI/Track.pm \
-	makefile.pl \
-	$(INST_LIBDIR)/makefile.pl \
 	lib/MIDI/Opus.pm \
 	$(INST_LIB)/MIDI/Opus.pm \
 	lib/MIDI/Filespec.pod \
@@ -426,7 +423,7 @@ clean ::
 # Delete temporary files (via clean) and also delete installed files
 realclean purge ::  clean
 	rm -rf $(INST_AUTODIR) $(INST_ARCHAUTODIR)
-	rm -f $(INST_LIB)/MIDI/Track.pm $(INST_LIBDIR)/makefile.pl $(INST_LIB)/MIDI/Opus.pm $(INST_LIB)/MIDI/Filespec.pod $(INST_LIB)/./MIDI.pm $(INST_LIB)/MIDI/Event.pm
+	rm -f $(INST_LIB)/MIDI/Track.pm $(INST_LIB)/MIDI/Opus.pm $(INST_LIB)/MIDI/Filespec.pod $(INST_LIB)/./MIDI.pm $(INST_LIB)/MIDI/Event.pm
 	rm -rf Makefile Makefile.old
 
 
