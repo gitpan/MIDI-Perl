@@ -1,12 +1,13 @@
-# Time-stamp: "1999-08-15 12:05:32 MDT"
-###########################################################################
+
+# Time-stamp: "2000-05-13 22:52:59 MDT"
+require 5;
 package MIDI::Opus;
 use strict;
 use vars qw($Debug $VERSION);
 use Carp;
 
 $Debug = 0;
-$VERSION = 0.75;
+$VERSION = 0.76;
 
 =head1 NAME
 
@@ -726,7 +727,7 @@ think you could die.)
 
 =head1 AUTHOR
 
-Sean M. Burke C<sburke@netadventure.net>
+Sean M. Burke C<sburke@cpan.org>
 
 =cut
 

@@ -1,5 +1,5 @@
 README for MIDI-Perl
-                                        Time-stamp: "1999-05-13 11:24:38 MDT"
+                                        Time-stamp: "2000-05-13 22:49:10 MDT"
 
 			      MIDI-Perl
 
@@ -58,7 +58,7 @@ folder.  Read the PODs with Shuck.
 SUPPORT
 
 Questions, bug reports, useful code bits, and suggestions for
-MIDI-Perl should just be sent to me at sburke@netadventure.net
+MIDI-Perl should just be sent to me at sburke@cpan.org
 
 
 AVAILABILITY
@@ -70,5 +70,5 @@ find a CPAN site near you.
 
 COPYRIGHT
 
-Copyright 1998,1999 by Sean M. Burke <sburke@netadventure.net>, all
+Copyright 1998,1999,2000 by Sean M. Burke <sburke@cpan.org>, all
 rights reserved.

@@ -1,4 +1,6 @@
-# Time-stamp: "1999-08-15 13:46:39 MDT"
+
+# Time-stamp: "2000-05-13 22:53:27 MDT"
+require 5;
 package MIDI::Simple;
 use MIDI;
 use Carp;
@@ -11,7 +13,7 @@ use vars qw(@ISA @EXPORT $VERSION $Debug
            );
 require Exporter;
 @ISA = qw(Exporter);
-$VERSION = 0.75;
+$VERSION = 0.76;
 $Debug = 0;
 
 @EXPORT = qw(
@@ -1890,7 +1892,7 @@ sub Self { # pointless as a method -- but as a sub, useful if
 
 =head1 AUTHOR
 
-Sean M. Burke C<sburke@netadventure.net>
+Sean M. Burke C<sburke@cpan.org>
 
 =cut
 

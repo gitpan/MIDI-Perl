@@ -1,5 +1,21 @@
 Revision history for Perl suite MIDI-Perl
-                                        Time-stamp: "2000-03-05 15:56:59 MST"
+                                        Time-stamp: "2000-05-14 00:30:02 MDT"
+
+2000-05-14  Sean M. Burke  sburke@cpan.org
+
+	* Release 0.76
+
+        * Noting my new email address.
+	
+	* MIDI::_dump_quote() was a bit over-broad in what string values
+	it considered numbers (i.e., what things it didn't have to put
+	quotes around).  I've changed it to leave only integers unquoted.
+	This shouldn't make any difference really, since if ever any Perl
+	code (whether in MIDI-Perl or elsewhere) needs to treat a
+	stringified numeral (whether integer or not) as a numeric value,
+	conversion is automatic.  Anyhow, almost all (absolutely all?) of
+	the actual numeric arguments to MIDI::Event events are integers.
+
 
 2000-03-05  Sean M. Burke  sburke@netadventure.net
 

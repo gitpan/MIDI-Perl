@@ -1,10 +1,12 @@
-# Time-stamp: "1999-08-15 13:47:10 MDT"
+
+# Time-stamp: "2000-05-13 22:53:10 MDT"
+require 5;
 package MIDI::Score;
 use strict;
 use vars qw($Debug $VERSION);
 use Carp;
 
-$VERSION = 0.75;
+$VERSION = 0.76;
 
 =head1 NAME
 
@@ -445,7 +447,7 @@ sub dump_score {
 
 =head1 AUTHOR
 
-Sean M. Burke C<sburke@netadventure.net>
+Sean M. Burke C<sburke@cpan.org>
 
 =cut
 

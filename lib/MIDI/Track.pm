@@ -1,13 +1,13 @@
- # Time-stamp: "1998-11-07 10:33:09 MST"
-###########################################################################
+
+# Time-stamp: "2000-05-13 22:55:22 MDT"
+require 5;
 package MIDI::Track;
 use strict;
 use vars qw($Debug $VERSION);
 use Carp;
 
 $Debug = 0;
-$VERSION = 0.72;
-# skipped from .61 right to .72 to keep in step with global versioning
+$VERSION = 0.76;
 
 =head1 NAME
 
@@ -413,7 +413,7 @@ sub decode { # returns a new object, but doesn't accept constructor syntax
 
 =head1 AUTHOR
 
-Sean M. Burke C<sburke@netadventure.net>
+Sean M. Burke C<sburke@cpan.org>
 
 =cut
 

@@ -1,6 +1,7 @@
-# Time-stamp: "1999-08-15 14:11:07 MDT"
-package MIDI::Event;
+
+# Time-stamp: "2000-05-13 22:53:53 MDT"
 require 5.004;        # I need BER working right, among other things.
+package MIDI::Event;
 
 use strict;
 use vars qw($Debug $VERSION @MIDI_events @Text_events @Nontext_meta_events
@@ -9,7 +10,7 @@ use vars qw($Debug $VERSION @MIDI_events @Text_events @Nontext_meta_events
 use Carp;
 
 $Debug = 0;
-$VERSION = 0.75;
+$VERSION = 0.76;
 
 #First 100 or so lines of this module are straightforward.  The actual
 # encoding logic below that is scary, tho.
@@ -1218,7 +1219,7 @@ at all in a C<raw_data> event.)
 
 =head1 AUTHOR
 
-Sean M. Burke C<sburke@netadventure.net>  (Except the BNF --
+Sean M. Burke C<sburke@cpan.org>  (Except the BNF --
 who knows who's behind that.)
 
 =cut

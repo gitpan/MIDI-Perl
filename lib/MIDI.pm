@@ -1,6 +1,10 @@
-###########################################################################
-# Time-stamp: "2000-03-05 16:00:17 MST"
+
+# Time-stamp: "2000-05-13 23:39:58 MDT"
+require 5;
 package MIDI;
+use strict;
+use vars qw($Debug $VERSION %number2note %note2number %number2patch
+	    %patch2number %notenum2percussion %percussion2notenum);
 use MIDI::Opus;
 use MIDI::Track;
 use MIDI::Event;
@@ -8,7 +12,7 @@ use MIDI::Score;
 # Doesn't use MIDI::Simple -- but MIDI::Simple uses this
 
 $Debug = 0; # currently doesn't do anything
-$VERSION = 0.75;
+$VERSION = 0.76;
 
 # MIDI.pm doesn't do much other than 1) 'use' all the necessary submodules
 # 2) provide some publicly useful hashes, 3) house a few private routines
@@ -368,7 +372,7 @@ the URL C<http://www.speech.cs.cmu.edu/~sburke/pub/perl_midi/>
 
 =head1 AUTHOR
 
-Sean M. Burke C<sburke@netadventure.net>
+Sean M. Burke C<sburke@cpan.org>
 
 =cut
 
@@ -382,7 +386,18 @@ sub _dump_quote {
 	 { # the cleaner-upper function
 	   if(!length($_)) { # empty string
 	     "''";
-	   } elsif( m/^-?\d+(?:\.\d+)?$/s ) { # a number
+	   } elsif(
+                   $_ eq '0' or m/^-?(?:[1-9]\d*)$/s  # integers
+
+		   # Was just: m/^-?\d+(?:\.\d+)?$/s
+                   # but that's over-broad, as let "0123" thru, which is
+                   # wrong, since that's octal 0123, == decimal 83.
+
+                   # m/^-?(?:(?:[1-9]\d*)|0)(?:\.\d+)?$/s and $_ ne '-0'
+                   # would let thru all well-formed numbers, but also
+                   # non-canonical forms of them like 0.3000000.
+                   # Better to just stick to integers I think.
+	   ) {
 	     $_;
 	   } elsif( # text with junk in it
 	      s<([^\x20\x21\x23\x27-\x3F\x41-\x5B\x5D-\x7E])>
