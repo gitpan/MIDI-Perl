@@ -1,6 +1,17 @@
 Revision history for Perl suite MIDI-Perl
-                                        Time-stamp: "2002-11-16 02:08:53 MST"
+                                        Time-stamp: "2005-01-29 16:05:31 AST"
 
+2005-01-29  Sean M. Burke  sburke@cpan.org
+
+	* Release 0.81 -- maintenance release.
+
+	* No Perl changes -- just doc tweaks mostly.
+	
+	* Rearranged the dist's contents to be more modern-like.
+
+	* Of course, more cowbell.
+	
+	
 2002-08-21  Sean M. Burke  sburke@cpan.org
 
 	* Release 0.80 -- just a docfix release, basically

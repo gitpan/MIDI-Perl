@@ -1,12 +1,12 @@
 
-# Time-stamp: "2002-11-16 01:57:08 MST"
+# Time-stamp: "2005-01-29 16:20:19 AST"
 require 5;
 package MIDI::Score;
 use strict;
 use vars qw($Debug $VERSION);
 use Carp;
 
-$VERSION = 0.79;
+$VERSION = '0.81';
 
 =head1 NAME
 
@@ -18,7 +18,7 @@ MIDI::Score - MIDI scores
 
 =head1 DESCRIPTION
 
-This module provides functions to do with with MIDI scores.
+This module provides functions to do with MIDI scores.
 It is used as the basis for all the functions in MIDI::Simple.
 (Incidentally, MIDI::Opus's draw() method also uses some of the
 functions in here.)
@@ -77,7 +77,7 @@ So, given this event structure:
  ['note_on', 0, 1, 25, 96],
  ['note_off', 192, 0, 1, 0],
 
-here is the corresponding score sctructure:
+here is the corresponding score structure:
 
  ['text_event', 0, 'www.ely.anglican.org/parishes/camgsm/chimes.html'],
  ['text_event', 0, 'Lord through this hour/ be Thou our guide'],

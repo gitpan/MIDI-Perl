@@ -1,5 +1,5 @@
 
-# Time-stamp: "2002-11-16 01:57:00 MST"
+# Time-stamp: "2005-01-29 16:29:42 AST"
 require 5;
 package MIDI::Track;
 use strict;
@@ -7,7 +7,7 @@ use vars qw($Debug $VERSION);
 use Carp;
 
 $Debug = 0;
-$VERSION = 0.76;
+$VERSION = '0.81';
 
 =head1 NAME
 
@@ -306,11 +306,11 @@ sub new_event {
 =item the method $track->dump({ ...options... })
 
 This dumps the track's contents for your inspection.  The dump format
-is code that looks like Perlcode you'd use to recreate that track.
+is code that looks like Perl code that you'd use to recreate that track.
 This routine outputs with just C<print>, so you can use C<select> to
 change where that'll go.  I intended this to be just an internal
 routine for use only by the method MIDI::Opus::dump, but I figure it
-might be useful to you, if you need te dump the code for just a given
+might be useful to you, if you need to dump the code for just a given
 track.
 Read the source if you really need to know how this works.
 

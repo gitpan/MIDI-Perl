@@ -1,8 +1,4 @@
 ChangeLog
-MANIFEST
-MANIFEST.SKIP
-Makefile.PL
-README
 lib/MIDI.pm
 lib/MIDI/Event.pm
 lib/MIDI/Filespec.pod
@@ -10,4 +6,20 @@ lib/MIDI/Opus.pm
 lib/MIDI/Score.pm
 lib/MIDI/Simple.pm
 lib/MIDI/Track.pm
-test.pl
+Makefile.PL
+MANIFEST
+MANIFEST.SKIP
+README
+t/00_about_verbose.t
+t/10_packw.t
+t/20_cowbell.t
+t/30_chimes.t
+t/40_cage.t
+t/50_dr_m.t
+t/60_hb.t
+t/70_j07003.t
+t/cage.mid
+t/dr_m.mid
+t/hb.mid
+t/j07003.mid
+META.yml                                 Module meta-data (added by MakeMaker)

@@ -1,5 +1,5 @@
 
-# Time-stamp: "2002-11-16 01:57:27 MST"
+# Time-stamp: "2005-01-29 16:24:17 AST"
 require 5.004;        # I need BER working right, among other things.
 package MIDI::Event;
 
@@ -10,7 +10,7 @@ use vars qw($Debug $VERSION @MIDI_events @Text_events @Nontext_meta_events
 use Carp;
 
 $Debug = 0;
-$VERSION = 0.76;
+$VERSION = '0.81';
 
 #First 100 or so lines of this module are straightforward.  The actual
 # encoding logic below that is scary, tho.
@@ -33,7 +33,7 @@ MIDI::Event - MIDI events
 
 =head1 DESCRIPTION
 
-Functions and lists to do with with MIDI events and MIDI event structures.
+Functions and lists to do with MIDI events and MIDI event structures.
 
 An event is a list, like:
 
@@ -1219,7 +1219,7 @@ at all in a C<raw_data> event.)
 
 =head1 COPYRIGHT 
 
-Copyright (c) 1998-2002 Sean M. Burke. All rights reserved.
+Copyright (c) 1998-2005 Sean M. Burke. All rights reserved.
 
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.

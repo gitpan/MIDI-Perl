@@ -1,5 +1,5 @@
 
-# Time-stamp: "2002-11-16 02:08:32 MST"
+# Time-stamp: "2005-01-29 16:32:14 AST"
 require 5;
 package MIDI::Simple;
 use MIDI;
@@ -14,7 +14,7 @@ use subs qw(&make_opus($\@) &write_score($$\@)
            );
 require Exporter;
 @ISA = qw(Exporter);
-$VERSION = 0.80;
+$VERSION = '0.81';
 $Debug = 0;
 
 @EXPORT = qw(
@@ -46,6 +46,11 @@ local %package = ();
 # To get at the current package's package-score object, just call
 #  $my_object = Self;
 
+# /
+#|  'Alchemical machinery runs smoothest in the imagination.'
+#|    -- Terence McKenna
+# \
+
 =head1 NAME
 
 MIDI::Simple - procedural/OOP interface for MIDI composition
@@ -54,31 +59,20 @@ MIDI::Simple - procedural/OOP interface for MIDI composition
 
  use MIDI::Simple;
  new_score;
- text_event 'http://www.ely.anglican.org/parishes/camgsm/chimes.html';
+ text_event 'http://www.ely.anglican.org/parishes/camgsm/bells/chimes.html';
  text_event 'Lord through this hour/ be Thou our guide';
  text_event 'so, by Thy power/ no foot shall slide';
  set_tempo 500000;  # 1 qn => .5 seconds (500,000 microseconds)
  patch_change 1, 8;  # Patch 8 = Celesta
 
- noop c1, f, o2;  # Setup
+ noop c1, f, o5;  # Setup
  # Now play
- n qn, Cs2;   n F;   n Ds;  n hn, Gs_d1;
+ n qn, Cs;    n F;   n Ds;  n hn, Gs_d1;
  n qn, Cs;    n Ds;  n F;   n hn, Cs;
  n qn, F;     n Cs;  n Ds;  n hn, Gs_d1;
  n qn, Gs_d1; n Ds;  n F;   n hn, Cs;
 
  write_score 'westmister_chimes.mid';
-
-=head1 NOTE ON VERSION CHANGES
-
-I consider this module a late-stage beta.  Let me know if you run into
-any problems, and feel free to suggest features.
-
-This module is somewhat incompatible with the MIDI::Simple versions
-before .700.
-
-I think I've settled on (i.e., basically frozen) the basic interface
-for this module, and will now hopefully only add functionality.
 
 =head1 DESCRIPTION
 
@@ -86,7 +80,7 @@ This module sits on top of all the MIDI modules -- notably MIDI::Score
 (so you should skim L<MIDI::Score>) -- and is meant to serve as a
 basic interface to them, for composition.  By composition, I mean
 composing anew; you can use this module to add to or modify existing
-MIDI files, but that functionality is to be considered expermental.
+MIDI files, but that functionality is to be considered a bit experimental.
 
 This module provides two related but distinct bits of functionality:
 1) a mini-language (implemented as procedures that can double as
@@ -97,6 +91,13 @@ scores you make with the composition language.
 The fact that this module's interface is both procedural and
 object-oriented makes it a definite two-headed beast.  The parts of
 the guts of the source code are not for the faint of heart.
+
+
+=head1 NOTE ON VERSION CHANGES
+
+This module is somewhat incompatible with the MIDI::Simple versions
+before .700 (but that was a I<looong> time ago).
+
 
 =cut
 
@@ -425,7 +426,7 @@ specifications in a given parameter list for n, r, or noop, then all
 those specifications together are assigned to Notes.
 
 If there are no note specifications in the parameter list for n, r, or
-noop, then Notes isn't changed.  (But see the destription of "rest",
+noop, then Notes isn't changed.  (But see the description of "rest",
 at the end of this section.)
 
 So this:
@@ -1915,7 +1916,7 @@ sub Self { # pointless as a method -- but as a sub, useful if
 
 =head1 COPYRIGHT 
 
-Copyright (c) 1998-2002 Sean M. Burke. All rights reserved.
+Copyright (c) 1998-2005 Sean M. Burke. All rights reserved.
 
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.

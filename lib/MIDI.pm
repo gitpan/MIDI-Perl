@@ -1,5 +1,5 @@
 
-# Time-stamp: "2002-11-16 02:11:47 MST"
+# Time-stamp: "2005-01-29 16:22:15 AST"
 require 5;
 package MIDI;
 use strict;
@@ -12,7 +12,7 @@ use MIDI::Score;
 # Doesn't use MIDI::Simple -- but MIDI::Simple uses this
 
 $Debug = 0; # currently doesn't do anything
-$VERSION = 0.80;
+$VERSION = '0.81';
 
 # MIDI.pm doesn't do much other than 1) 'use' all the necessary submodules
 # 2) provide some publicly useful hashes, 3) house a few private routines
@@ -25,20 +25,31 @@ MIDI - read, compose, modify, and write MIDI files
 =head1 SYNOPSIS
 
  use MIDI;
- $chimes_track = MIDI::Track->new({ 'events' => [
-  ['text_event',0, 'www.ely.anglican.org/parishes/camgsm/chimes.html'],
-  ['text_event',0, 'Lord through this hour/ be Thou our guide'],
-  ['text_event',0, 'so, by Thy power/ no foot shall slide'],
-  ['text_event',0, '(coded at ' . scalar(localtime) . ' )'],
-  ['patch_change', 0, 1, 8], # Patch 8 = Celesta
-  map( (['note_on',0,1,$_->[0],96], ['note_off',$_->[1],1,$_->[0],0]),
-       [25,96],[29,96],[27,96],[20,192],[25,96],[27,96],[29,96],[25,192],
-       [29,96],[25,96],[27,96],[20,192],[20,96],[27,96],[29,96],[25,192],
-     )# [Note,Duration] ==> ['note_on',0,1, N ,96], ['note_off', D ,1, N ,0]
- ] });
- $chimes = MIDI::Opus->new(
-  { 'format' => 0, 'ticks' => 96, 'tracks' => [ $chimes_track ] } );
- $chimes->write_to_file('chimes.mid');
+ use strict;
+ use warnings;
+ my @events = (
+   ['text_event',0, 'MORE COWBELL'],
+   ['set_tempo', 0, 450_000], # 1qn = .45 seconds
+ );
+
+ for (1 .. 20) {
+   push @events,
+     ['note_on' , 90,  9, 56, 127],
+     ['note_off',  6,  9, 56, 127],
+   ;
+ }
+ foreach my $delay (reverse(1..96)) {
+   push @events,
+     ['note_on' ,      0,  9, 56, 127],
+     ['note_off', $delay,  9, 56, 127],
+   ;
+ }
+
+ my $cowbell_track = MIDI::Track->new({ 'events' => \@events });
+ my $opus = MIDI::Opus->new(
+  { 'format' => 0, 'ticks' => 96, 'tracks' => [ $cowbell_track ] } );
+ $opus->write_to_file( 'cowbell.mid' );
+
 
 =head1 DESCRIPTION
 
@@ -82,9 +93,6 @@ guts of existing MIDI files, read the pods in the order given above.
 But if you aim to compose music with this suite, read this pod, then
 L<MIDI::Score> and L<MIDI::Simple>, and then skim the rest.
 
-(For your reference, there is also a document in pod format which is
-not itself an actual module: L<MIDI::Filespec>.  It is an old version
-of the MIDI file specification.)
 
 =head1 INTRODUCTION
 
@@ -110,23 +118,6 @@ hope) get along just fine with just a basic grasp of the MIDI
 "standard", and a command of LoLs.  I have tried, at various points in
 this documentation, to point out what things are not likely to be of
 use to the casual user.
-
-=head1 TO DO
-
-Maybe have a MIDI cookbook of commonly used short scripts?
-
-B<A PLEA>: Currently this suite can only read/write MIDI data from/to
-MIDI I<files>.  However, it would be desirable to have realtime access
-to a MIDI device -- at least on systems where a MIDI device (whether
-thru a hardware port or as a virtual sequencer in a sound card) is
-accessable as a virtual file (C</dev/midi0>, C</dev/midi>,
-C</dev/sequencer>, or whatever).  However, I have no such MIDI devices
-(much less ports) at hand for development and testing.  But if I<you>
-have such devices (I'm thinking a Linuxer with a synth hooked to their
-MIDI port), and if you want to help me experiment with directly
-accessing them from Perl, then please email me.  I already have a
-pretty good idea of how it should work -- but as always, the proof is
-as much in the pudding as the devil is in the details.
 
 =head1 GOODIES
 
@@ -355,10 +346,19 @@ B<variable-length encoding>: an encoding method identical to what Perl
 calls the 'w' (BER, Basic Encoding Rules) pack/unpack format for
 integers.
 
+=head1 SEE ALSO
+
+L<http://interglacial.com/~sburke/midi-perl/> -- the MIDI-Perl homepage
+on the Interwebs!
+
+L<http://search.cpan.org/search?m=module&q=MIDI&n=100> -- All the MIDI
+things in CPAN!
+
 =head1 REFERENCES
 
 Christian Braut.  I<The Musician's Guide to Midi.>  ISBN 0782112854.
-[This one is indispensible --SMB]
+[This one is indispensible, but sadly out of print.  Look at abebooks.com
+for it maybe --SMB]
 
 Langston, Peter S.  1998. "Little Music Languages", p.587-656 in:
 Salus, Peter H,. editor in chief, /Handbook of Programming Languages/,
@@ -367,12 +367,9 @@ not worth the money, but see if you can at least glance at this
 article anyway.  It's not often you see 70 pages written on music
 languages. --SMB]
 
-I'll keep a list of other references and good stuff at
-the URL C<http://www.speech.cs.cmu.edu/~sburke/pub/perl_midi/>
-
 =head1 COPYRIGHT 
 
-Copyright (c) 1998-2002 Sean M. Burke. All rights reserved.
+Copyright (c) 1998-2005 Sean M. Burke. All rights reserved.
 
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
