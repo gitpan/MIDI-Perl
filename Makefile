@@ -42,9 +42,9 @@ AR_STATIC_ARGS = cr
 NAME = MIDI-Perl
 DISTNAME = MIDI-Perl
 NAME_SYM = MIDI_Perl
-VERSION = 0.52
-VERSION_SYM = 0_52
-XS_VERSION = 0.52
+VERSION = 0.6
+VERSION_SYM = 0_6
+XS_VERSION = 0.6
 INST_BIN = ./blib/bin
 INST_EXE = ./blib/script
 INST_LIB = ./blib/lib
@@ -101,6 +101,8 @@ MAN3PODS = lib/MIDI.pm \
 	lib/MIDI/Event.pm \
 	lib/MIDI/Filespec.pod \
 	lib/MIDI/Opus.pm \
+	lib/MIDI/Score.pm \
+	lib/MIDI/Simple.pm \
 	lib/MIDI/Track.pm
 INST_MAN1DIR = ./blib/man1
 INSTALLMAN1DIR = /usr/local/gnu/man/man1
@@ -144,6 +146,8 @@ TO_INST_PM = lib/MIDI.pm \
 	lib/MIDI/Event.pm \
 	lib/MIDI/Filespec.pod \
 	lib/MIDI/Opus.pm \
+	lib/MIDI/Score.pm \
+	lib/MIDI/Simple.pm \
 	lib/MIDI/Track.pm
 
 PM_TO_BLIB = lib/MIDI/Track.pm \
@@ -154,8 +158,12 @@ PM_TO_BLIB = lib/MIDI/Track.pm \
 	$(INST_LIB)/MIDI/Filespec.pod \
 	lib/MIDI.pm \
 	$(INST_LIB)/./MIDI.pm \
+	lib/MIDI/Simple.pm \
+	$(INST_LIB)/MIDI/Simple.pm \
 	lib/MIDI/Event.pm \
-	$(INST_LIB)/MIDI/Event.pm
+	$(INST_LIB)/MIDI/Event.pm \
+	lib/MIDI/Score.pm \
+	$(INST_LIB)/MIDI/Score.pm
 
 
 # --- MakeMaker tool_autosplit section:
@@ -385,7 +393,9 @@ manifypods : lib/MIDI/Track.pm \
 	lib/MIDI/Opus.pm \
 	lib/MIDI.pm \
 	lib/MIDI/Filespec.pod \
-	lib/MIDI/Event.pm
+	lib/MIDI/Event.pm \
+	lib/MIDI/Simple.pm \
+	lib/MIDI/Score.pm
 	@$(POD2MAN) \
 	lib/MIDI/Track.pm \
 	$(INST_MAN3DIR)/MIDI::Track.$(MAN3EXT) \
@@ -396,7 +406,11 @@ manifypods : lib/MIDI/Track.pm \
 	lib/MIDI/Filespec.pod \
 	$(INST_MAN3DIR)/MIDI::Filespec.$(MAN3EXT) \
 	lib/MIDI/Event.pm \
-	$(INST_MAN3DIR)/MIDI::Event.$(MAN3EXT)
+	$(INST_MAN3DIR)/MIDI::Event.$(MAN3EXT) \
+	lib/MIDI/Simple.pm \
+	$(INST_MAN3DIR)/MIDI::Simple.$(MAN3EXT) \
+	lib/MIDI/Score.pm \
+	$(INST_MAN3DIR)/MIDI::Score.$(MAN3EXT)
 
 # --- MakeMaker processPL section:
 
@@ -423,7 +437,7 @@ clean ::
 # Delete temporary files (via clean) and also delete installed files
 realclean purge ::  clean
 	rm -rf $(INST_AUTODIR) $(INST_ARCHAUTODIR)
-	rm -f $(INST_LIB)/MIDI/Track.pm $(INST_LIB)/MIDI/Opus.pm $(INST_LIB)/MIDI/Filespec.pod $(INST_LIB)/./MIDI.pm $(INST_LIB)/MIDI/Event.pm
+	rm -f $(INST_LIB)/MIDI/Track.pm $(INST_LIB)/MIDI/Opus.pm $(INST_LIB)/MIDI/Filespec.pod $(INST_LIB)/./MIDI.pm $(INST_LIB)/MIDI/Simple.pm $(INST_LIB)/MIDI/Event.pm $(INST_LIB)/MIDI/Score.pm
 	rm -rf Makefile Makefile.old
 
 

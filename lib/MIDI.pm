@@ -1,12 +1,14 @@
 ###########################################################################
-# Time-stamp: "1998-08-14 09:10:44 MDT"
+# Time-stamp: "1998-08-23 17:55:58 MDT"
 package MIDI;
 use MIDI::Opus;
 use MIDI::Track;
 use MIDI::Event;
+use MIDI::Score;
+# doesn't use MIDI::Simple
 
 $Debug = 0; # currently doesn't do anything
-$VERSION = 0.52;
+$VERSION = 0.60;
 
 # MIDI.pm doesn't do much other than 1) 'use' all the necessary submodules
 # 2) provide some publicly useful hashes, 3) house a few private routines
@@ -62,26 +64,41 @@ of data sent over a MIDI port. [...]
 
 =head1 COMPONENTS
 
-The MIDI suite consists of these modules:
+The MIDI-Perl suite consists of these modules:
 
-L<MIDI> (which you're looking at), L<MIDI::Opus>, L<MIDI::Track>, and
-L<MIDI::Event>.  All of these contain documentation in pod format.
-You should read all these pods.
+L<MIDI> (which you're looking at), L<MIDI::Opus>, L<MIDI::Track>, 
+L<MIDI::Event>, L<MIDI::Score>, and
+L<MIDI::Simple>.  All of these contain documentation in pod format.
+You should read all of these pods.
 
-For your reference, there is also a document in pod format which is not
+The order you want to read them in will depend on what you want to do
+with this suite of modules: if you are focused on manipulating the
+guts of existing MIDI files, read the pods in the order given above.
+
+But if you aim to compose music with this suite, read this pod, then
+L<MIDI::Score> and L<MIDI::Simple>, and then skim the rest.
+
+(For your reference, there is also a document in pod format which is not
 itself an actual module: L<MIDI::Filespec>.  It is an old version
-of the MIDI file specification.
+of the MIDI file specification.)
 
 =head1 INTRODUCTION
 
-This suite of modules is basically object-oriented.  MIDI opuses
-("songs") are represented as objects belonging to the class
-MIDI::Opus.  An opus contains tracks, which are objects belonging to
-the class MIDI::Track.  A track will generally contain a list of
-events, where each event is a list consisting of a command, a
+This suite of modules is basically object-oriented, with the exception of
+MIDI::Simple.  MIDI opuses ("songs") are represented as objects belonging
+to the class MIDI::Opus.  An opus contains tracks, which are objects
+belonging to the class MIDI::Track.  A track will generally contain a list
+of events, where each event is a list consisting of a command, a
 delta-time, and some number of parameters.  In other words, opuses and
 tracks are objects, and the events in a track comprise a LoL (and if you
 don't know what an LoL is, you must read L<perllol>).
+
+Furthermore, for some purposes it's useful to analyze the totality of
+a track's events as a "score" -- where a score consists of notes
+where each event is a list consisting of a command, a
+time offset from the start of the track, and some number of parameters.
+This is the level of abstraction that MIDI::Score and MIDI::Simple deal
+with. 
 
 While this suite does provide some functionality accessible only if
 you're comfortable with various kinds of references, and while there
@@ -99,15 +116,8 @@ release of this module.
 Maybe have a MIDI cookbook of commonly used short scripts?
 
 Have a more abstract level of abstraction than MIDI events, such that
-1) notes are represented as a single event, instead of each a pair of
-a note_on event and a note_off event; and 2) events are represented as
-having a given time-offset from start-of-track, instead of this fishy
-delta-time business, which is not exactly prime for composition.
-Actually, I'm currently working on this -- expect it to show up as
-another attribute of a track object, maybe $track->score, beside
-$track->events, and stored similarly to the events LoL.
 
-Have modules carp/croak instead of warn/die.
+Have more modules carp/croak instead of warn/die.
 
 Have more modules "use strict".
 
@@ -127,8 +137,8 @@ as much in the pudding as the devil is in the details.
 =head1 GOODIES
 
 The bare module MIDI.pm doesn't I<do> much more than C<use> the
-component submodules.  But it does provide some hashes you might find
-useful:
+necessary component submodules (i.e., all except MIDI::Simple).
+But it does provide some hashes you might find useful:
 
 =over
 
@@ -139,29 +149,29 @@ useful:
 
 =item C<%MIDI::note2number> and C<%MIDI::number2note>
 
-C<%MIDI::note2number> correponds MIDI note numbers to a more
-comprehensible representation (e.g., 68 to 'G#4');
-C<%MIDI::number2note> is the reverse.  Have a look at the source
+C<%MIDI::number2note> correponds MIDI note numbers to a more
+comprehensible representation (e.g., 68 to 'Gs4', for G-sharp, octave 4);
+C<%MIDI::note2number> is the reverse.  Have a look at the source
 to see the contents of the hash.
 
 =cut
-@note2number{0 .. 127} = (
+@number2note{0 .. 127} = (
 # (Do)        (Re)         (Mi)  (Fa)         (So)         (La)        (Ti)
- 'C0', 'C#0', 'D0', 'D#0', 'E0', 'F0', 'F#0', 'G0', 'G#0', 'A0', 'A#', 'B0',
- 'C1', 'C#1', 'D1', 'D#1', 'E1', 'F1', 'F#1', 'G1', 'G#1', 'A1', 'A#', 'B1',
- 'C2', 'C#2', 'D2', 'D#2', 'E2', 'F2', 'F#2', 'G2', 'G#2', 'A2', 'A#', 'B2',
- 'C3', 'C#3', 'D3', 'D#3', 'E3', 'F3', 'F#3', 'G3', 'G#3', 'A3', 'A#', 'B3',
- 'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#', 'B4',
- 'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5', 'A#', 'B5',
- 'C6', 'C#6', 'D6', 'D#6', 'E6', 'F6', 'F#6', 'G6', 'G#6', 'A6', 'A#', 'B6',
- 'C7', 'C#7', 'D7', 'D#7', 'E7', 'F7', 'F#7', 'G7', 'G#7', 'A7', 'A#', 'B7',
- 'C8', 'C#8', 'D8', 'D#8', 'E8', 'F8', 'F#8', 'G8', 'G#8', 'A8', 'A#', 'B8',
- 'C9', 'C#9', 'D9', 'D#9', 'E9', 'F9', 'F#9', 'G9', 'G#9', 'A9', 'A#', 'B9',
- 'C10','C#10','D10','D#10','E10','F10','F#10','G10',
+ 'C0', 'Cs0', 'D0', 'Ds0', 'E0', 'F0', 'Fs0', 'G0', 'Gs0', 'A0', 'As0', 'B0',
+ 'C1', 'Cs1', 'D1', 'Ds1', 'E1', 'F1', 'Fs1', 'G1', 'Gs1', 'A1', 'As1', 'B1',
+ 'C2', 'Cs2', 'D2', 'Ds2', 'E2', 'F2', 'Fs2', 'G2', 'Gs2', 'A2', 'As2', 'B2',
+ 'C3', 'Cs3', 'D3', 'Ds3', 'E3', 'F3', 'Fs3', 'G3', 'Gs3', 'A3', 'As3', 'B3',
+ 'C4', 'Cs4', 'D4', 'Ds4', 'E4', 'F4', 'Fs4', 'G4', 'Gs4', 'A4', 'As4', 'B4',
+ 'C5', 'Cs5', 'D5', 'Ds5', 'E5', 'F5', 'Fs5', 'G5', 'Gs5', 'A5', 'As5', 'B5',
+ 'C6', 'Cs6', 'D6', 'Ds6', 'E6', 'F6', 'Fs6', 'G6', 'Gs6', 'A6', 'As6', 'B6',
+ 'C7', 'Cs7', 'D7', 'Ds7', 'E7', 'F7', 'Fs7', 'G7', 'Gs7', 'A7', 'As7', 'B7',
+ 'C8', 'Cs8', 'D8', 'Ds8', 'E8', 'F8', 'Fs8', 'G8', 'Gs8', 'A8', 'As8', 'B8',
+ 'C9', 'Cs9', 'D9', 'Ds9', 'E9', 'F9', 'Fs9', 'G9', 'Gs9', 'A9', 'As9', 'B9',
+ 'C10','Cs10','D10','Ds10','E10','F10','Fs10','G10',
   # Note number 69 reportedly == A440, under a default tuning.
   # and note 60 = Middle C
 );
-%number2note = reverse %note2number;
+%note2number = reverse %number2note;
 # Note how I deftly avoid having to figure out how to represent a flat mark
 #  in ASCII.
 
@@ -172,13 +182,13 @@ to see the contents of the hash.
 
 =item C<%MIDI::patch2number> and C<%MIDI::number2patch>
 
-C<%MIDI::patch2number> correponds General MIDI patch numbers
+C<%MIDI::number2patch> correponds General MIDI patch numbers
 (0 to 127) to English names (e.g., 79 to 'Ocarina');
-C<%MIDI::number2patch> is the reverse.  Have a look at the source
+C<%MIDI::patch2number> is the reverse.  Have a look at the source
 to see the contents of the hash.
 
 =cut
-@patch2number{0 .. 127} = (   # The General MIDI map: patches 0 to 127
+@number2patch{0 .. 127} = (   # The General MIDI map: patches 0 to 127
 #0: Piano
  "Acoustic Grand", "Bright Acoustic", "Electric Grand", "Honky-Tonk",
  "Electric Piano 1", "Electric Piano 2", "Harpsichord", "Clav",
@@ -238,7 +248,7 @@ to see the contents of the hash.
  "Guitar Fret Noise", "Breath Noise", "Seashore", "Bird Tweet",
  "Telephone Ring", "Helicopter", "Applause", "Gunshot",
 );
-%number2patch = reverse %patch2number;
+%patch2number = reverse %number2patch;
 
 ###########################################################################
 #     ****    TABLE 2  -  General MIDI Percussion Key Map    ****
@@ -299,12 +309,14 @@ given channel.  Like S registers in Hayes-set modems, MIDI controls
 consist of a few well-known registers, and beyond that, it's
 patch-specific and/or sequencer-specific.
 
-B<delta time>: the time (in ticks) that a sequencer should wait
+B<delta-time>: the time (in ticks) that a sequencer should wait
 between playing the previous event and playing the current event.
 
 B<meta-event>: any of a mixed bag of events whose common trait is
 merely that they are similarly encoded.  Most meta-events apply to all
 channels, unlike events, which mostly apply to just one channel.
+
+B<note>: my oversimplistic term for items in a score structure.
 
 B<opus>: the term I prefer for a piece of music, as represented in
 MIDI.  Most specs use the term "song", but I think that this
@@ -318,6 +330,11 @@ an event command byte (a "status" byte) is to be interpreted as having
 the same event command as the preceding event -- which may, in turn,
 lack a status byte and may have to be interpreted as having the same
 event command as I<its> previous event, and so on back.
+
+B<score>: a structure of notes like an event structure, but where
+notes are represented as single items, and where timing of items
+is absolute from the beginning of the track, instead of being
+represented in delta-times.
 
 B<song>: what some MIDI specs call a song, I call an opus.
 
@@ -359,6 +376,7 @@ Sean M. Burke C<sburke@netadventure.net>
 ###########################################################################
 sub _dump_quote {
   # Used variously by some MIDI::* modules.  Might as well keep it here.
+  my @stuff = @_;
   return
     join(", ",
 	map
@@ -377,7 +395,7 @@ sub _dump_quote {
 	     "\'$_\'";
 	   }
 	 }
-	 (@_)
+	 @stuff
 	);
 }
 ###########################################################################

@@ -1,9 +1,10 @@
-# Time-stamp: "1998-08-13 23:33:23 MDT"
+# Time-stamp: "1998-08-23 16:58:22 MDT"
 package MIDI::Event;
 require 5.004;        # I need BER working right, among other things.
 no strict; # maybe we'll be strict some day
 $Debug = 0;
-$VERSION = 0.51;
+$VERSION = 0.60;
+# use strict;
 
 #First 100 or so lines of this module are straightforward.  The actual
 # encoding logic below that is scary, tho.
@@ -242,9 +243,9 @@ sub copy_structure {
   # Takes a REFERENCE to an event structure (a ref to a LoL),
   # and returns a REFERENCE to a copy of that structure.
   my $events_r = $_[0];
-  die "\$_[0] isn't a reference for MIDI::Event::copy()!!"
-    unless ref $events_r;
-  return [  map( [@_], @$events_r )  ];
+  die "\$_[0] ($events_r) isn't a reference for MIDI::Event::copy()!!"
+    unless ref($events_r);
+  return [  map( [@$_], @$events_r )  ];
 }
 
 ###########################################################################
@@ -380,7 +381,7 @@ Events use these data types:
 
 =item song_pos = a value 0 to 16,383 (0x3FFF)
 
-=item tempo = a value 0 to 16,777,215 (0x00FFFFFF)
+=item tempo = microseconds, a value 0 to 16,777,215 (0x00FFFFFF)
 
 =back
 
@@ -953,7 +954,7 @@ sub encode { # encode an event structure, presumably for writing to a file
   my $maybe_running_status = not $options_r->{'no_running_status'};
   my $last_status = -1;
  Event_Encode:
-  foreach $event_r (@events) {
+  foreach my $event_r (@events) {
     next unless ref($event_r); # what'd such a thing ever be doing in here?
     my @E = @$event_r;
      # Yes, copy it.  Otherwise the shifting'd corrupt the original
@@ -1113,6 +1114,7 @@ sub encode { # encode an event structure, presumably for writing to a file
 
 ###########################################################################
 
+###########################################################################
 
 =head1 MIDI BNF
 

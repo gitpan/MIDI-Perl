@@ -1,8 +1,9 @@
-# Time-stamp: "1998-08-13 23:50:01 MDT"
+# Time-stamp: "1998-08-23 14:01:34 MDT"
 ###########################################################################
 package MIDI::Opus;
 $Debug = 0;
-$VERSION = 0.51;
+# use strict;
+$VERSION = 0.60;
 
 =head1 NAME
 
@@ -29,7 +30,7 @@ of tracks objects that are the real content of that opus.
 Be aware that options specified for the encoding or decoding of an
 opus may not be documented in I<this> module's documentation, as they
 may be (and, in fact, generally are) options just passed down to the
-decoder/encoder in MIDI::Events -- so see <MIDI::Events> for an
+decoder/encoder in MIDI::Event -- so see L<MIDI::Event> for an
 explanation of most of them, actually.
 
 =head1 CONSTRUCTOR AND METHODS
@@ -259,8 +260,8 @@ sub dump { # method; read-only
 
   if($options_r->{'flat'}) { # Super-barebones dump mode
     my $d = $options_r->{'delimiter'} || "\t";
-    foreach $track ($this->tracks) {
-      foreach $event (@{ $track->events_r }) {
+    foreach my $track ($this->tracks) {
+      foreach my $event (@{ $track->events_r }) {
 	print( join($d, @$event), "\n" );
       }
     }
@@ -274,7 +275,7 @@ sub dump { # method; read-only
   my @tracks = $this->tracks;
   if( $options_r->{'dump_tracks'} ) {
     print "  'tracks' => [   # ", scalar(@tracks), " tracks...\n\n";
-    foreach $x (0 .. $#tracks) {
+    foreach my $x (0 .. $#tracks) {
       my $track = $tracks[$x];
       print "    # Track \#$x ...\n";
       if(ref($track)) {
@@ -388,7 +389,7 @@ sub write_to_handle { # method
     "MThd\x00\x00\x00\x06", # header; 6 bytes follow
     pack('nnn', $format, $tracks, $ticks)
   );
-  foreach $track (@{ $opus->{'tracks'} }) {
+  foreach my $track (@{ $opus->{'tracks'} }) {
     my $data = '';
     my $type = substr($track->{'type'} . "\x00\x00\x00\x00", 0, 4);
       # Force it to be 4 chars long.
@@ -418,21 +419,21 @@ sub read_from_handle { # a method, surprisingly enough
   binmode($fh);
 
   my $in = '';
-  die "Can't even read the first 14 bytes of $source"
+  die "Can't even read the first 14 bytes from filehandle $fh"
     unless read($fh, $in, 14);
     # 14 = The expected header length.
 
   my($id, $length, $format, $tracks_expected, $ticks) = unpack('A4Nnnn', $in);
 
-  die "$source doesn't start with a MIDI file header"
+  die "data from handle $fh doesn't start with a MIDI file header"
     unless $id eq 'MThd';
-  die "Unexpected MTHd chunk length in $source"
+  die "Unexpected MTHd chunk length in data from handle $fh"
     unless $length == 6;
   $opus->{'format'} = $format;
   $opus->{'ticks'}  = $ticks;   # ...which may be a munged 'negative' number
   $opus->{'tracks'} = [];
 
-  print "$source file header read and parsed fine.\n" if $Debug;
+  print "file header from handle $fh read and parsed fine.\n" if $Debug;
   my $track_count = 0;
 
  Track_Chunk:
@@ -452,21 +453,164 @@ sub read_from_handle { # a method, surprisingly enough
       );
     } else {
       die
-        "Length of track \#$track_count is off in $source; I wanted $length\, but got "
+        "Length of track \#$track_count is off in data from $fh; I wanted $length\, but got "
         . length($data);
     }
   }
 
   warn
-    "Header in $source says to expect $tracks_expected tracks, but only $track_count were found\n"
+    "Header in data from $fh says to expect $tracks_expected tracks, but only $track_count were found\n"
     unless $tracks_expected == $track_count;
-  warn "No tracks read from $source\n" if $track_count == 0;
+  warn "No tracks read in data from $fh\n" if $track_count == 0;
 
   return $opus;
 }
+###########################################################################
+
+=item the method $opus->draw({ ...options...})
+
+This currently experimental method returns a new GD image object that's
+a graphic representation of the notes in the given opus.  Options include:
+C<width> -- the width of the image in pixels (defaults to 600);
+C<bgcolor> -- a six-digit hex RGB representation of the background color
+for the image (defaults to $MIDI::Opus::BG_color, currently '000000');
+C<channel_colors> -- a reference to a list of colors (in six-digit hex RGB)
+to use for representing notes on given channels.
+Defaults to @MIDI::Opus::Channel_colors.
+This list is a list of pairs of colors, such that:
+the first of a pair (color N*2) is the color for the first pixel in a
+note on channel N; and the second (color N*2 + 1) is the color for the
+remaining pixels of that note.  If you specify only enough colors for
+channels 0 to M, notes on a channels above M will use 'recycled'
+colors -- they will be plotted with the color for channel
+"channel_number % M" (where C<%> = the MOD operator).
+
+This means that if you specify
+
+          channel_colors => ['00ffff','0000ff']
+
+then all the channels' notes will be plotted with an aqua pixel followed
+by blue ones; and if you specify
+
+          channel_colors => ['00ffff','0000ff', 'ff00ff','ff0000']
+
+then all the I<even> channels' notes will be plotted with an aqua
+pixel followed by blue ones, and all the I<odd> channels' notes will
+be plotted with a purple pixel followed by red ones.
+
+As to what to do with the object you get back, you probably want
+something like:
+
+          $im = $chachacha->draw;
+          open(OUT, ">$gif_out"); binmode(OUT);
+          print OUT $im->gif;
+          close(OUT);
+
+Using this method will cause a C<die> if it can't successfully C<use GD>.
+
+I emphasise that C<draw> is expermental, and, in any case, is only meant
+to be a crude hack.  Notably, it does not address well some basic problems:
+neither volume nor patch-selection (nor any notable aspects of the
+patch selected)
+are represented; pitch-wheel changes are not represented;
+percussion (whether on percussive patches or on channel 10) is not
+specially represented, as it probably should be;
+notes overlapping are not represented at all well.
+
+=cut
+
+sub draw { # method
+  my $opus = $_[0];
+  my $options_r = ref($_[1]) ? $_[0] : {};
+
+  &use_GD(); # will die at runtime if we call this function but it can't use GD
+
+  my $opus_time = 0;
+  my @scores = ();
+  foreach my $track ($opus->tracks) {
+    my($score_r, $track_time) = MIDI::Score::events_r_to_score_r(
+      $track->events_r );
+    push(@scores, $score_r) if @$score_r;
+    $opus_time = $track_time if $track_time > $opus_time;
+  }
+
+  my $width = $options_r->{'width'} || 600;
+
+  die "opus can't be drawn because it takes no time" unless $opus_time;
+  my $pixtix = $opus_time / $width; # Number of ticks a pixel represents
+
+  my $im = GD::Image->new($width,127);
+  # This doesn't handle pitch wheel, nor does it tread things on channel 10
+  #  (percussion) as specially as it probably should.
+  # The problem faced here is how to map onto pixel color all the
+  #  characteristics of a note (say, Channel, Note, Volume, and Patch).
+  # I'll just do it for channels.  Rewrite this on your own if you want
+  #  something different.
+
+  my $bg_color =
+    $im->colorAllocate(unpack('C3', pack('H2H2H2',unpack('a2a2a2',
+	( length($options_r->{'bg_color'}) ? $options_r->{'bg_color'}
+          : $MIDI::Opus::BG_color)
+							 ))) );
+  @MIDI::Opus::Channel_colors = ( '00ffff' , '0000ff' )
+    unless @MIDI::Opus::Channel_colors;
+  my @colors =
+    map( $im->colorAllocate(
+			    unpack('C3', pack('H2H2H2',unpack('a2a2a2',$_)))
+			   ), # convert 6-digit hex to a scalar tuple
+	 ref($options_r->{'channel_colors'}) ?
+           @{$options_r->{'channel_colors'}} : @MIDI::Opus::Channel_colors
+       );
+  my $channels_in_palette = int(@colors / 2);
+  $im->fill(0,0,$bg_color);
+  foreach my $score_r (@scores) {
+    foreach my $event_r (@$score_r) {
+      next unless $event_r->[0] eq 'note';
+      my($time, $duration, $channel, $note, $volume) = @{$event_r}[1,2,3,4,5];
+      my $y = 127 - $note;
+      my $start_x = $time / $pixtix;
+      $im->line($start_x, $y, ($time + $duration) / $pixtix, $y,
+                $colors[1 + ($channel % $channels_in_palette)] );
+      $im->setPixel($start_x , $y, $colors[$channel % $channels_in_palette] );
+    }
+  }
+  return $im; # Returns the GD object, which the user then dumps however
+}
+
+#--------------------------------------------------------------------------
+{ # Closure so we can use this wonderful variable:
+  my $GD_used = 0;
+  sub use_GD {
+    return if $GD_used;
+    eval("use GD;"); die "You don't seem to have GD installed." if $@;
+    $GD_used = 1; return;
+  }
+  # Why use GD at runtime like this, instead of at compile-time like normal?
+  # So we can still use everything in this module except &draw even if we
+  # don't have GD on this system.
+}
+
+######################################################################
+# This maps channel number onto colors for draw(). It is quite unimaginative,
+#  and reuses colors two or three times.  It's a package global.  You can
+#  change it by assigning to @MIDI::Simple::Channel_colors.
+
+@MIDI::Opus::Channel_colors =
+  (
+   'c0c0ff', '6060ff',  # start / sustain color, channel 0
+   'c0ffc0', '60ff60',  # start / sustain color, channel 1, etc...
+   'ffc0c0', 'ff6060',  'ffc0ff', 'ff60ff',  'ffffc0', 'ffff60',
+   'c0ffff', '60ffff',
+   
+   'c0c0ff', '6060ff',  'c0ffc0', '60ff60',  'ffc0c0', 'ff6060', 
+   'c0c0c0', '707070', # channel 10
+   
+   'ffc0ff', 'ff60ff',  'ffffc0', 'ffff60',  'c0ffff', '60ffff',
+   'c0c0ff', '6060ff',  'c0ffc0', '60ff60',  'ffc0c0', 'ff6060',
+  );
+$MIDI::Opus::BG_color = '000000'; # Black goes with everything, you know.
 
 ###########################################################################
-1;
 
 =back
 
@@ -537,4 +681,5 @@ Sean M. Burke C<sburke@netadventure.net>
 
 =cut
 
+1;
 __END__

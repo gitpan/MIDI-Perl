@@ -1,11 +1,37 @@
-                                        Time-stamp: "1998-08-14 09:11:45 MDT"
+                                        Time-stamp: "1998-08-23 18:01:07 MDT"
 
 1998-08-13  Sean M. Burke  sburke@netadventure.net
 
-	* Release 0.51!  First CPAN release.  Get it while it's hot!
+	* Release 0.51:  First CPAN release.  Get it while it's hot!
 
 1998-08-14  Sean M. Burke  sburke@netadventure.net
 
 	* Release 0.52:  makefile fix.  chimes example in MIDI.pm
-
 		
+1998-08-16  Sean M. Burke  sburke@netadventure.net
+
+	* Release 0.60: 
+	Subtly destructive bug in MIDI::_dump_quote fixed.
+	
+	MIDI::Event::copy_structure didn't work; fixed.
+	
+	%MIDI::note2number and %MIDI::note2number were named backwards --
+	note2number actually mapped numbers to notes, and number2note
+	mapped notes to numbers.  It made no sense, so I reversed it.
+
+	Ditto patch2number and number2patch!  What was I thinking?
+
+	Typos in %MIDI::note2number fixed.  All the A#'s were "A#" instead
+	of "A#3" or whatever.  I also changed the "#" for sharp to "s",
+	giving, e.g., "As3" instead of "A#3".  This gives a representation
+	compatable with MIDI::Simple's notation.  But note that
+	%MIDI::note2number doesn't contain all of the possible ways
+	MIDI::Simple could let you represent a note -- just a
+	(semi-quirky) subset of them.
+	
+	New module MIDI::Simple.
+	
+	Added MIDI::Event:: score subs, to support draw() and
+	MIDI::Simple.
+	
+	Added MIDI::Opus::draw and supporting subs.
