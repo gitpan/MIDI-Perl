@@ -1,12 +1,12 @@
 
-# Time-stamp: "2000-08-21 15:32:57 MDT"
+# Time-stamp: "2000-08-21 15:50:51 MDT"
 require 5;
 package MIDI::Score;
 use strict;
 use vars qw($Debug $VERSION);
 use Carp;
 
-$VERSION = 0.78;
+$VERSION = 0.79;
 
 =head1 NAME
 
@@ -378,15 +378,15 @@ sub events_r_to_score_r {
 	  { # End of a note
 	    # print "Note off : @$_\n";
 	    delete(
-		   $note{@{$_}[2,3]}
+		   $note{pack 'CC', @{$_}[2,3]}
 		  )->[2] += $time
-		    if exists $note{ @{$_}[2,3] };
+		    if exists $note{ pack 'CC', @{$_}[2,3] };
 	    (); # Erase this event.
 	  } elsif ($_->[0] eq 'note_on') {
 	    # Start of a note
 	    $_ = [@$_];
 	    
-	    $note{ @{$_}[2,3] } = $_;
+	    $note{ pack 'CC', @{$_}[2,3] } = $_;
 	    splice(@$_, 2, 0, -$time);
 	    $_->[0] = 'note';
 	    # ('note', Starttime, Duration, Channel, Note, Veloc)
