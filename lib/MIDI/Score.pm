@@ -1,12 +1,12 @@
 
-# Time-stamp: "2000-05-13 22:53:10 MDT"
+# Time-stamp: "2000-05-20 18:14:06 MDT"
 require 5;
 package MIDI::Score;
 use strict;
 use vars qw($Debug $VERSION);
 use Carp;
 
-$VERSION = 0.76;
+$VERSION = 0.77;
 
 =head1 NAME
 
@@ -237,17 +237,21 @@ sub copy_structure {
 }
 ##########################################################################
 
+=item $events_r = MIDI::Score::score_r_to_events_r( $score_r )
+
 =item ($events_r, $ticks) = MIDI::Score::score_r_to_events_r( $score_r )
 
-This takes a I<reference> to a score structure, and converts it to
-an event structure, which it returns a I<reference> to, along
-with a count of the number of ticks that structure takes to play
-(i.e., the end-time of the temporally last item).
+This takes a I<reference> to a score structure, and converts it to an
+event structure, which it returns a I<reference> to.  In list context,
+also returns a second value, a count of the number of ticks that
+structure takes to play (i.e., the end-time of the temporally last
+item).
 
 =cut
 
 sub score_r_to_events_r {
-  # Returns the events_r AND the total tick time
+  # list context: Returns the events_r AND the total tick time
+  # scalar context: Returns events_r
   my $score_r = $_[0];
   my $time = 0;
   my @events = ();
@@ -286,7 +290,8 @@ sub score_r_to_events_r {
     $time = $event->[1]; # Move it forward
     $event->[1] = $delta; # Swap it in
   }
-  return($score_r, $time);
+  return($score_r, $time) if wantarray;
+  return $score_r;
 }
 ###########################################################################
 
@@ -328,12 +333,15 @@ sub sort_score_r {
 }
 ###########################################################################
 
+=item $score_r = MIDI::Score::events_r_to_score_r( $events_r )
+
 =item ($score_r, $ticks) = MIDI::Score::events_r_to_score_r( $events_r )
 
-This takes a I<reference> to an event structure, converts it to
-a score structure, which it returns a I<reference> to, along
-with a count of the number of ticks that structure takes to play
-(i.e., the end-time of the temporally last item).
+This takes a I<reference> to an event structure, converts it to a
+score structure, which it returns a I<reference> to.  If called in
+list context, also returns a count of the number of ticks that
+structure takes to play (i.e., the end-time of the temporally last
+item).
 
 =cut
 
@@ -351,7 +359,8 @@ sub events_r_to_score_r {
       # print join(' ', @$event_r), "\n";
       $event_r->[1] = ($time += $event_r->[1]) if ref($event_r);
     }
-    return($score_r, $time);
+    return($score_r, $time) if wantarray;
+    return $score_r;
   } else {
     my %note = ();
     my @score =
@@ -395,8 +404,8 @@ sub events_r_to_score_r {
     foreach my $one (values %note) {
       $one->[2] += $time;
     }
-
-    return(\@score, $time);
+    return(\@score, $time) if wantarray;
+    return \@score;
   }
 }
 ###########################################################################

@@ -1,6 +1,20 @@
 Revision history for Perl suite MIDI-Perl
-                                        Time-stamp: "2000-05-14 00:30:02 MDT"
+                                        Time-stamp: "2000-05-20 18:21:17 MDT"
 
+2000-05-20  Sean M. Burke  sburke@cpan.org
+
+	* Release 0.77
+
+	* Fixing an incidental bug in MIDI::Simple (which surfaces only
+	in Perl 5.6, apparently).  Thanks to Matt Burt (m.burt@bcs.org.uk)
+	for finding the bug, as well as noting the fix.
+
+	* Changed MIDI::Score::score_r_to_events_r and
+	MIDI::Score::events_r_to_score_r (which were useful only in list
+	context previously) to do something useful (and rather intuitive)
+	in scalar context.
+	
+	
 2000-05-14  Sean M. Burke  sburke@cpan.org
 
 	* Release 0.76

@@ -1,19 +1,20 @@
 
-# Time-stamp: "2000-05-13 22:53:27 MDT"
+# Time-stamp: "2000-05-20 18:06:28 MDT"
 require 5;
 package MIDI::Simple;
 use MIDI;
 use Carp;
 use strict 'vars';
+use strict 'subs';
 use vars qw(@ISA @EXPORT $VERSION $Debug
             %package
-            %Volume @Note %Note %Length
-            &make_opus($\@) &write_score($$\@)
+            %Volume @Note %Note %Length);
+use subs qw(&make_opus($\@) &write_score($$\@)
             &read_score($) &dump_score(\@)
            );
 require Exporter;
 @ISA = qw(Exporter);
-$VERSION = 0.76;
+$VERSION = 0.77;
 $Debug = 0;
 
 @EXPORT = qw(
@@ -1799,6 +1800,28 @@ Or consider this:
       } else {
         print "Snorf!\n";
       }
+
+(Author's note, two years later: all this business of returning lists
+of various sizes, with this and other functions in here, is basically
+a workaround for the fact that there's not really any such thing as a
+boolean context in Perl -- at least, not as far as user-defined
+functions can see.  I now think I should have done this with just
+returning a single scalar value: a number (which could be 0!) if the
+input is a number, and undef/emptylist (C<return;>) if not -- then,
+the user could test:
+
+      # Hypothetical --
+      # This fuction doesn't actually work this way:
+      if(defined(my $note_val = is_relative_note_spec($string))) {
+         ...do things with $note_val...
+      } else {
+         print "Hey, that's no note!\n";
+      }
+
+However, I don't anticipate users actually using these messy functions
+often at all -- I basically wrote these for internal use by
+MIDI::Simple, then I documented them on the off chance they I<might>
+be of use to anyone else.)
 
 =cut
 
