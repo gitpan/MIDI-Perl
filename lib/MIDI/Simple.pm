@@ -1,4 +1,4 @@
-# Time-stamp: "1999-05-13 11:13:46 MDT"
+# Time-stamp: "1999-08-15 13:46:39 MDT"
 package MIDI::Simple;
 use MIDI;
 use Carp;
@@ -11,7 +11,7 @@ use vars qw(@ISA @EXPORT $VERSION $Debug
            );
 require Exporter;
 @ISA = qw(Exporter);
-$VERSION = 0.74;
+$VERSION = 0.75;
 $Debug = 0;
 
 @EXPORT = qw(
@@ -1064,7 +1064,7 @@ And here's the ones I'll be surprised if anyone ever uses:
 
 =item song_position I<starttime>;
 
-=item song_select I<thing>;
+=item song_select I<song_number>;
 
 =item tune_request I<starttime>;
 

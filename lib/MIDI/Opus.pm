@@ -1,4 +1,4 @@
-# Time-stamp: "1999-05-13 11:17:40 MDT"
+# Time-stamp: "1999-08-15 12:05:32 MDT"
 ###########################################################################
 package MIDI::Opus;
 use strict;
@@ -6,7 +6,7 @@ use vars qw($Debug $VERSION);
 use Carp;
 
 $Debug = 0;
-$VERSION = 0.74;
+$VERSION = 0.75;
 
 =head1 NAME
 
@@ -349,7 +349,10 @@ sub read_from_file { # method, surprisingly enough
   unless(open(IN_MIDI, "<$source")) {
     croak "Can't open $source for reading\: \"$!\"\n";
   }
-  $opus->read_from_handle(*IN_MIDI{IO}, $options_r);
+  my $size = -s $source;
+  $size = undef unless $size;
+
+  $opus->read_from_handle(*IN_MIDI{IO}, $options_r, $size);
   # Thanks to the EFNet #perl cabal for helping me puzzle out "*IN_MIDI{IO}"
   close(IN_MIDI) ||
     croak "error while closing filehandle for $source\: \"$!\"\n";
@@ -426,13 +429,24 @@ sub read_from_handle { # a method, surprisingly enough
   my $opus = $_[0];
   my $fh = $_[1];
   my $options_r = ref($_[2]) eq 'HASH' ?  $_[2] : {};
+  my $file_size_left;
+  $file_size_left = $_[3] if defined $_[3];
 
   binmode($fh);
 
   my $in = '';
+
+  my $track_size_limit;
+  $track_size_limit = $options_r->{'track_size'}
+   if exists $options_r->{'track_size'};
+
   croak "Can't even read the first 14 bytes from filehandle $fh"
     unless read($fh, $in, 14);
     # 14 = The expected header length.
+
+  if(defined $file_size_left) {
+    $file_size_left -= 14;
+  }
 
   my($id, $length, $format, $tracks_expected, $ticks) = unpack('A4Nnnn', $in);
 
@@ -452,11 +466,31 @@ sub read_from_handle { # a method, surprisingly enough
     ++$track_count;
     print "Reading Track \# $track_count into a new track\n" if $Debug;
 
-    my($header, $data) = undef;
+    if(defined $file_size_left) {
+      $file_size_left -= 2;
+      croak "reading further would exceed file_size_limit"
+	if $file_size_left < 0;
+    }
+
+    my($header, $data);
     croak "Can't read header for track chunk \#$track_count"
       unless read($fh, $header, 8);
     my($type, $length) = unpack('A4N', $header);
-    read($fh, $data, $length);
+
+    if(defined $track_size_limit and $track_size_limit > $length) {
+      croak "Track \#$track_count\'s length ($length) would"
+       . " exceed track_size_limit $track_size_limit";
+    }
+
+    if(defined $file_size_left) {
+      $file_size_left -= $length;
+      croak "reading track \#$track_count (of length $length) " 
+        . "would exceed file_size_limit"
+       if $file_size_left < 0;
+    }
+
+    read($fh, $data, $length);   # whooboy, actually read it now
+
     if($length == length($data)) {
       push(
         @{ $opus->{'tracks'} },
@@ -464,13 +498,15 @@ sub read_from_handle { # a method, surprisingly enough
       );
     } else {
       croak
-        "Length of track \#$track_count is off in data from $fh; I wanted $length\, but got "
+        "Length of track \#$track_count is off in data from $fh; "
+        . "I wanted $length\, but got "
         . length($data);
     }
   }
 
   carp
-    "Header in data from $fh says to expect $tracks_expected tracks, but only $track_count were found\n"
+    "Header in data from $fh says to expect $tracks_expected tracks, "
+    . "but only $track_count were found\n"
     unless $tracks_expected == $track_count;
   carp "No tracks read in data from $fh\n" if $track_count == 0;
 
@@ -685,6 +721,8 @@ as, for example, in a CGI that scans for text events in a uploaded
 MIDI file that may or may not be well-formed.  If this I<is> the kind
 of task you or someone you know may want to do, let me know and I'll
 consider some kind of 'no_die' parameter in future releases.
+(Or just trap the die in an eval { } around your call to anything you
+think you could die.)
 
 =head1 AUTHOR
 

@@ -1,10 +1,12 @@
 # This Makefile is for the MIDI-Perl extension to perl.
 #
 # It was generated automatically by MakeMaker version
-# 5.42 (Revision: 1.216) from the contents of
+# 5.4302 (Revision: 1.222) from the contents of
 # Makefile.PL. Don't edit this file, edit Makefile.PL instead.
 #
 #	ANY CHANGES MADE HERE WILL BE LOST!
+#
+#   MakeMaker ARGV: ()
 #
 #   MakeMaker Parameters:
 
@@ -17,21 +19,23 @@
 
 # --- MakeMaker const_config section:
 
-# These definitions are from config.sh (via /usr/local/gnu/lib/perl5/aix/5.00404/Config.pm)
+# These definitions are from config.sh (via /usr/local/gnu/lib/perl5/5.00503/aix/Config.pm)
 
 # They may have been overridden via Makefile.PL or on the command line
 AR = ar
-CC = gcc
-CCCDLFLAGS = -fpic
-CCDLFLAGS = -Xlinker -bE:perl.exp
+CC = cc
+CCCDLFLAGS =  
+CCDLFLAGS = -bE:perl.exp
 DLEXT = so
 DLSRC = dl_aix.xs
-LD = /usr/ccs/bin/ld
-LDDLFLAGS = -H512 -T512 -bhalt:4 -bM:SRE -bI:$(PERL_INC)/perl.exp -bE:$(BASEEXT).exp -b noentry -lc -L/usr/local/lib -L/usr/local/gnu/lib -L/usr/ccs/lib -L/usr/lib -L/lib
-LDFLAGS = -L/usr/local/lib -L/usr/local/gnu/lib -L/usr/ccs/lib -L/usr/lib -L/lib
-LIBC = /lib/libc.a
+LD = ld
+LDDLFLAGS = -bhalt:4 -bM:SRE -bI:$(PERL_INC)/perl.exp -bE:$(BASEEXT).exp -b noentry -lc -L/usr/local/lib -L/usr/local/gnu/lib -L/usr/ccs/lib -L/lib
+LDFLAGS = -L/usr/local/lib -L/usr/local/gnu/lib -L/usr/ccs/lib -L/lib
+LIBC = 
 LIB_EXT = .a
 OBJ_EXT = .o
+OSNAME = aix
+OSVERS = 4.3.1.0
 RANLIB = :
 SO = a
 EXE_EXT = 
@@ -42,31 +46,31 @@ AR_STATIC_ARGS = cr
 NAME = MIDI-Perl
 DISTNAME = MIDI-Perl
 NAME_SYM = MIDI_Perl
-VERSION = 0.74
-VERSION_SYM = 0_74
-XS_VERSION = 0.74
-INST_BIN = ./blib/bin
-INST_EXE = ./blib/script
-INST_LIB = ./blib/lib
-INST_ARCHLIB = ./blib/arch
-INST_SCRIPT = ./blib/script
+VERSION = 0.75
+VERSION_SYM = 0_75
+XS_VERSION = 0.75
+INST_BIN = blib/bin
+INST_EXE = blib/script
+INST_LIB = blib/lib
+INST_ARCHLIB = blib/arch
+INST_SCRIPT = blib/script
 PREFIX = /usr/local/gnu
 INSTALLDIRS = site
-INSTALLPRIVLIB = $(PREFIX)/lib/perl5
-INSTALLARCHLIB = $(PREFIX)/lib/perl5/aix/5.00404
-INSTALLSITELIB = $(PREFIX)/lib/perl5/site_perl
-INSTALLSITEARCH = $(PREFIX)/lib/perl5/site_perl/aix
+INSTALLPRIVLIB = $(PREFIX)/lib/perl5/5.00503
+INSTALLARCHLIB = $(PREFIX)/lib/perl5/5.00503/aix
+INSTALLSITELIB = $(PREFIX)/lib/perl5/site_perl/5.005
+INSTALLSITEARCH = $(PREFIX)/lib/perl5/site_perl/5.005/aix
 INSTALLBIN = $(PREFIX)/bin
 INSTALLSCRIPT = $(PREFIX)/bin
-PERL_LIB = /usr/local/gnu/lib/perl5
-PERL_ARCHLIB = /usr/local/gnu/lib/perl5/aix/5.00404
-SITELIBEXP = /usr/local/gnu/lib/perl5/site_perl
-SITEARCHEXP = /usr/local/gnu/lib/perl5/site_perl/aix
+PERL_LIB = /usr/local/gnu/lib/perl5/5.00503
+PERL_ARCHLIB = /usr/local/gnu/lib/perl5/5.00503/aix
+SITELIBEXP = /usr/local/gnu/lib/perl5/site_perl/5.005
+SITEARCHEXP = /usr/local/gnu/lib/perl5/site_perl/5.005/aix
 LIBPERL_A = libperl.a
 FIRST_MAKEFILE = Makefile
 MAKE_APERL_FILE = Makefile.aperl
 PERLMAINCC = $(CC)
-PERL_INC = /usr/local/gnu/lib/perl5/aix/5.00404/CORE
+PERL_INC = /usr/local/gnu/lib/perl5/5.00503/aix/CORE
 PERL = /bin/perl
 FULLPERL = /bin/perl
 
@@ -75,8 +79,8 @@ DEFINE_VERSION = -D$(VERSION_MACRO)=\"$(VERSION)\"
 XS_VERSION_MACRO = XS_VERSION
 XS_DEFINE_VERSION = -D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"
 
-MAKEMAKER = /usr/local/gnu/lib/perl5/ExtUtils/MakeMaker.pm
-MM_VERSION = 5.42
+MAKEMAKER = /usr/local/gnu/lib/perl5/5.00503/ExtUtils/MakeMaker.pm
+MM_VERSION = 5.4302
 
 # FULLEXT = Pathname for extension directory (eg Foo/Bar/Oracle).
 # BASEEXT = Basename part of FULLEXT. May be just equal FULLEXT. (eg Oracle)
@@ -103,13 +107,16 @@ MAN3PODS = lib/MIDI.pm \
 	lib/MIDI/Opus.pm \
 	lib/MIDI/Score.pm \
 	lib/MIDI/Simple.pm \
-	lib/MIDI/Track.pm
-INST_MAN1DIR = ./blib/man1
+	lib/MIDI/Track.pm \
+	lib/MIDI/mtoot.pod
+INST_MAN1DIR = blib/man1
 INSTALLMAN1DIR = /usr/local/gnu/man/man1
 MAN1EXT = 1
-INST_MAN3DIR = ./blib/man3
-INSTALLMAN3DIR = $(PREFIX)/lib/perl5/man/man3
+INST_MAN3DIR = blib/man3
+INSTALLMAN3DIR = /usr/local/gnu/lib/perl5/5.00503/man/man3
 MAN3EXT = 3
+PERM_RW = 644
+PERM_RWX = 755
 
 # work around a famous dec-osf make(1) feature(?):
 makemakerdflt: all
@@ -148,16 +155,19 @@ TO_INST_PM = lib/MIDI.pm \
 	lib/MIDI/Opus.pm \
 	lib/MIDI/Score.pm \
 	lib/MIDI/Simple.pm \
-	lib/MIDI/Track.pm
+	lib/MIDI/Track.pm \
+	lib/MIDI/mtoot.pod
 
 PM_TO_BLIB = lib/MIDI/Track.pm \
 	$(INST_LIB)/MIDI/Track.pm \
 	lib/MIDI/Opus.pm \
 	$(INST_LIB)/MIDI/Opus.pm \
+	lib/MIDI/mtoot.pod \
+	$(INST_LIB)/MIDI/mtoot.pod \
 	lib/MIDI/Filespec.pod \
 	$(INST_LIB)/MIDI/Filespec.pod \
 	lib/MIDI.pm \
-	$(INST_LIB)/./MIDI.pm \
+	$(INST_LIB)/MIDI.pm \
 	lib/MIDI/Simple.pm \
 	$(INST_LIB)/MIDI/Simple.pm \
 	lib/MIDI/Event.pm \
@@ -180,7 +190,7 @@ AUTOSPLITFILE = $(PERL) "-I$(PERL_ARCHLIB)" "-I$(PERL_LIB)" -e 'use AutoSplit;au
 SHELL = /bin/sh
 CHMOD = chmod
 CP = cp
-LD = /usr/ccs/bin/ld
+LD = ld
 MV = mv
 NOOP = $(SHELL) -c true
 RM_F = rm -f
@@ -306,33 +316,33 @@ config :: Version_check
 	@$(NOOP)
 
 
-$(INST_AUTODIR)/.exists :: /usr/local/gnu/lib/perl5/aix/5.00404/CORE/perl.h
+$(INST_AUTODIR)/.exists :: /usr/local/gnu/lib/perl5/5.00503/aix/CORE/perl.h
 	@$(MKPATH) $(INST_AUTODIR)
-	@$(EQUALIZE_TIMESTAMP) /usr/local/gnu/lib/perl5/aix/5.00404/CORE/perl.h $(INST_AUTODIR)/.exists
+	@$(EQUALIZE_TIMESTAMP) /usr/local/gnu/lib/perl5/5.00503/aix/CORE/perl.h $(INST_AUTODIR)/.exists
 
-	-@$(CHMOD) 755 $(INST_AUTODIR)
+	-@$(CHMOD) $(PERM_RWX) $(INST_AUTODIR)
 
-$(INST_LIBDIR)/.exists :: /usr/local/gnu/lib/perl5/aix/5.00404/CORE/perl.h
+$(INST_LIBDIR)/.exists :: /usr/local/gnu/lib/perl5/5.00503/aix/CORE/perl.h
 	@$(MKPATH) $(INST_LIBDIR)
-	@$(EQUALIZE_TIMESTAMP) /usr/local/gnu/lib/perl5/aix/5.00404/CORE/perl.h $(INST_LIBDIR)/.exists
+	@$(EQUALIZE_TIMESTAMP) /usr/local/gnu/lib/perl5/5.00503/aix/CORE/perl.h $(INST_LIBDIR)/.exists
 
-	-@$(CHMOD) 755 $(INST_LIBDIR)
+	-@$(CHMOD) $(PERM_RWX) $(INST_LIBDIR)
 
-$(INST_ARCHAUTODIR)/.exists :: /usr/local/gnu/lib/perl5/aix/5.00404/CORE/perl.h
+$(INST_ARCHAUTODIR)/.exists :: /usr/local/gnu/lib/perl5/5.00503/aix/CORE/perl.h
 	@$(MKPATH) $(INST_ARCHAUTODIR)
-	@$(EQUALIZE_TIMESTAMP) /usr/local/gnu/lib/perl5/aix/5.00404/CORE/perl.h $(INST_ARCHAUTODIR)/.exists
+	@$(EQUALIZE_TIMESTAMP) /usr/local/gnu/lib/perl5/5.00503/aix/CORE/perl.h $(INST_ARCHAUTODIR)/.exists
 
-	-@$(CHMOD) 755 $(INST_ARCHAUTODIR)
+	-@$(CHMOD) $(PERM_RWX) $(INST_ARCHAUTODIR)
 
 config :: $(INST_MAN3DIR)/.exists
 	@$(NOOP)
 
 
-$(INST_MAN3DIR)/.exists :: /usr/local/gnu/lib/perl5/aix/5.00404/CORE/perl.h
+$(INST_MAN3DIR)/.exists :: /usr/local/gnu/lib/perl5/5.00503/aix/CORE/perl.h
 	@$(MKPATH) $(INST_MAN3DIR)
-	@$(EQUALIZE_TIMESTAMP) /usr/local/gnu/lib/perl5/aix/5.00404/CORE/perl.h $(INST_MAN3DIR)/.exists
+	@$(EQUALIZE_TIMESTAMP) /usr/local/gnu/lib/perl5/5.00503/aix/CORE/perl.h $(INST_MAN3DIR)/.exists
 
-	-@$(CHMOD) 755 $(INST_MAN3DIR)
+	-@$(CHMOD) $(PERM_RWX) $(INST_MAN3DIR)
 
 help:
 	perldoc ExtUtils::MakeMaker
@@ -387,26 +397,29 @@ POD2MAN = $(PERL) -we '%m=@ARGV;for (keys %m){' \
 -e 'next if -e $$m{$$_} && -M $$m{$$_} < -M $$_ && -M $$m{$$_} < -M "Makefile";' \
 -e 'print "Manifying $$m{$$_}\n";' \
 -e 'system(qq[$$^X ].q["-I$(PERL_ARCHLIB)" "-I$(PERL_LIB)" $(POD2MAN_EXE) ].qq[$$_>$$m{$$_}])==0 or warn "Couldn\047t install $$m{$$_}\n";' \
--e 'chmod 0644, $$m{$$_} or warn "chmod 644 $$m{$$_}: $$!\n";}'
+-e 'chmod(oct($(PERM_RW))), $$m{$$_} or warn "chmod $(PERM_RW) $$m{$$_}: $$!\n";}'
 
-manifypods : lib/MIDI/Track.pm \
-	lib/MIDI/Opus.pm \
-	lib/MIDI.pm \
+manifypods : pure_all lib/MIDI.pm \
 	lib/MIDI/Filespec.pod \
 	lib/MIDI/Event.pm \
+	lib/MIDI/Track.pm \
+	lib/MIDI/Opus.pm \
+	lib/MIDI/mtoot.pod \
 	lib/MIDI/Simple.pm \
 	lib/MIDI/Score.pm
 	@$(POD2MAN) \
-	lib/MIDI/Track.pm \
-	$(INST_MAN3DIR)/MIDI::Track.$(MAN3EXT) \
-	lib/MIDI/Opus.pm \
-	$(INST_MAN3DIR)/MIDI::Opus.$(MAN3EXT) \
 	lib/MIDI.pm \
 	$(INST_MAN3DIR)/MIDI.$(MAN3EXT) \
 	lib/MIDI/Filespec.pod \
 	$(INST_MAN3DIR)/MIDI::Filespec.$(MAN3EXT) \
 	lib/MIDI/Event.pm \
 	$(INST_MAN3DIR)/MIDI::Event.$(MAN3EXT) \
+	lib/MIDI/Track.pm \
+	$(INST_MAN3DIR)/MIDI::Track.$(MAN3EXT) \
+	lib/MIDI/Opus.pm \
+	$(INST_MAN3DIR)/MIDI::Opus.$(MAN3EXT) \
+	lib/MIDI/mtoot.pod \
+	$(INST_MAN3DIR)/MIDI::mtoot.$(MAN3EXT) \
 	lib/MIDI/Simple.pm \
 	$(INST_MAN3DIR)/MIDI::Simple.$(MAN3EXT) \
 	lib/MIDI/Score.pm \
@@ -437,7 +450,7 @@ clean ::
 # Delete temporary files (via clean) and also delete installed files
 realclean purge ::  clean
 	rm -rf $(INST_AUTODIR) $(INST_ARCHAUTODIR)
-	rm -f $(INST_LIB)/MIDI/Track.pm $(INST_LIB)/MIDI/Opus.pm $(INST_LIB)/MIDI/Filespec.pod $(INST_LIB)/./MIDI.pm $(INST_LIB)/MIDI/Simple.pm $(INST_LIB)/MIDI/Event.pm $(INST_LIB)/MIDI/Score.pm
+	rm -f $(INST_LIB)/MIDI/Track.pm $(INST_LIB)/MIDI/Opus.pm $(INST_LIB)/MIDI/mtoot.pod $(INST_LIB)/MIDI/Filespec.pod $(INST_LIB)/MIDI.pm $(INST_LIB)/MIDI/Simple.pm $(INST_LIB)/MIDI/Event.pm $(INST_LIB)/MIDI/Score.pm
 	rm -rf Makefile Makefile.old
 
 
@@ -569,7 +582,7 @@ pure_site_install ::
 		$(PERL_ARCHLIB)/auto/$(FULLEXT)
 
 doc_perl_install ::
-	@$(DOC_INSTALL) \
+	-@$(DOC_INSTALL) \
 		"Module" "$(NAME)" \
 		"installed into" "$(INSTALLPRIVLIB)" \
 		LINKTYPE "$(LINKTYPE)" \
@@ -578,7 +591,7 @@ doc_perl_install ::
 		>> $(INSTALLARCHLIB)/perllocal.pod
 
 doc_site_install ::
-	@$(DOC_INSTALL) \
+	-@$(DOC_INSTALL) \
 		"Module" "$(NAME)" \
 		"installed into" "$(INSTALLSITELIB)" \
 		LINKTYPE "$(LINKTYPE)" \
@@ -612,6 +625,7 @@ FORCE:
 Makefile : Makefile.PL $(CONFIGDEP)
 	@echo "Makefile out-of-date with respect to $?"
 	@echo "Cleaning current config before rebuilding Makefile..."
+	-@$(RM_F) Makefile.old
 	-@$(MV) Makefile Makefile.old
 	-$(MAKE) -f Makefile.old clean $(DEV_NULL) || $(NOOP)
 	$(PERL) "-I$(PERL_ARCHLIB)" "-I$(PERL_LIB)" Makefile.PL 
@@ -665,6 +679,11 @@ test_ : test_dynamic
 test_static :: test_dynamic
 testdb_static :: testdb_dynamic
 
+
+# --- MakeMaker ppd section:
+# Creates a PPD (Perl Package Description) for a binary distribution.
+ppd:
+	@$(PERL) -e "print qq{<SOFTPKG NAME=\"MIDI-Perl\" VERSION=\"0,75,0,0\">\n}. qq{\t<TITLE>MIDI-Perl</TITLE>\n}. qq{\t<ABSTRACT></ABSTRACT>\n}. qq{\t<AUTHOR></AUTHOR>\n}. qq{\t<IMPLEMENTATION>\n}. qq{\t\t<OS NAME=\"$(OSNAME)\" />\n}. qq{\t\t<ARCHITECTURE NAME=\"aix\" />\n}. qq{\t\t<CODEBASE HREF=\"\" />\n}. qq{\t</IMPLEMENTATION>\n}. qq{</SOFTPKG>\n}" > MIDI-Perl.ppd
 
 # --- MakeMaker pm_to_blib section:
 

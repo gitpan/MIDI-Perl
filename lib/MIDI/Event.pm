@@ -1,4 +1,4 @@
-# Time-stamp: "1998-11-07 10:25:27 MST"
+# Time-stamp: "1999-08-15 14:11:07 MDT"
 package MIDI::Event;
 require 5.004;        # I need BER working right, among other things.
 
@@ -9,9 +9,7 @@ use vars qw($Debug $VERSION @MIDI_events @Text_events @Nontext_meta_events
 use Carp;
 
 $Debug = 0;
-$VERSION = 0.72;
-# skipped from .61 right to .72 to keep in step with global versioning
-
+$VERSION = 0.75;
 
 #First 100 or so lines of this module are straightforward.  The actual
 # encoding logic below that is scary, tho.
@@ -264,16 +262,15 @@ sub copy_structure {
 sub read_14_bit {
   # Decodes to a value 0 to 16383, as is used for some event encoding
   my($b1, $b2) = unpack("C2", $_[0]);
-  return ($b1 | ($b2 <<7));
+  return ($b1 | ($b2 << 7));
 }
 
 sub write_14_bit {
   # encode a 14 bit quantity, as needed for some events
-  my $in = $_[0];
   return
     pack("C2",
-	 ($in & 0x7F), # lower 7 bits
-	 (($in >> 7) & 0x7F), # upper 7 bits
+         ($_[0] & 0x7F), # lower 7 bits
+         (($_[0] >> 7) & 0x7F), # upper 7 bits
 	);
 }
 
@@ -351,7 +348,6 @@ sub decode { # decode track data into an event structure
 
 
   my $Pointer = 0; # points to where I am in the data
-  my $last_event_code = -1; # used for running-status things
   ######################################################################
   if($Debug) {
     if($Debug == 1) {
@@ -391,6 +387,8 @@ Events use these data types:
 
 =item song_pos = a value 0 to 16,383 (0x3FFF)
 
+=item song_number = a value 0 to 127
+
 =item tempo = microseconds, a value 0 to 16,777,215 (0x00FFFFFF)
 
 =back
@@ -408,13 +406,16 @@ And these are the events:
 =over
 
 =cut
+  # Things I use variously, below.  They're here just for efficiency's sake,
+  # to avoid remying on each iteration.
+  my($command, $channel, $parameter, $length, $time, $remainder);
 
-  my($command, $channel, $parameter, $length); # things I use variously, below
+  my $event_code = -1; # used for running status
+
   my $event_count = 0;
  Event:  # Analyze the event stream.
   while($Pointer + 1 < length($$data_r)) {
     # loop while there's anything to analyze ...
-    my($event_code, $time, $remainder) = ();
     my $eot = 0; # When 1, the event registrar aborts this loop
     ++$event_count;
 
@@ -423,37 +424,34 @@ And these are the events:
     #  way at the end.
 
     # Slice off the delta time code, and analyze it
-    #!# print "Chew-code <", substr($$data_r,$Pointer,4), ">\n";
+      #!# print "Chew-code <", substr($$data_r,$Pointer,4), ">\n";
     ($time, $remainder) = unpack("wa*", substr($$data_r,$Pointer,4));
-    #!# print "Delta-time $time using ", 4 - length($remainder), " bytes\n"
-    #!#  if $Debug > 1;
+      #!# print "Delta-time $time using ", 4 - length($remainder), " bytes\n"
+      #!#  if $Debug > 1;
     $Pointer +=  4 - length($remainder);
       # We do this strangeness with remainders because we don't know 
       #  how many bytes the w-decoding should move the pointer ahead.
 
     # Now let's see what we can make of the command
     my $first_byte = ord(substr($$data_r, $Pointer, 1));
-    # Whatever parses $first_byte is responsible for moving $Pointer
-    #  forward.
-    #!#print "Event \# $event_count: $first_byte at track-offset $Pointer\n"
-    #!#  if $Debug > 1;
+      # Whatever parses $first_byte is responsible for moving $Pointer
+      #  forward.
+      #!#print "Event \# $event_count: $first_byte at track-offset $Pointer\n"
+      #!#  if $Debug > 1;
 
     ######################################################################
     if ($first_byte < 0xF0) { # It's a MIDI event ########################
       if($first_byte >= 0x80) {
 	print "Explicit event $first_byte" if $Debug > 2;
         ++$Pointer; # It's an explicit event.
-        $last_event_code = $event_code = $first_byte;
-        #  Set $last_event for possible future use.
+        $event_code = $first_byte;
       } else {
-        # It's a running status mofo.
-        if($last_event_code == -1) {
-          warn
-            "Uninterpretable use of running status; Aborting track."
+        # It's a running status mofo -- just use last $event_code value
+        if($event_code == -1) {
+          warn "Uninterpretable use of running status; Aborting track."
             if $Debug;
           last Event;
         }
-        $event_code = $last_event_code; # Leave $last_event in place
         # Let the argument-puller-offer move Pointer.
       }
       $command = $event_code & 0xF0;
@@ -770,13 +768,13 @@ And these are the events:
     ######################################################################
     } elsif($first_byte == 0xF3) { # It's a Song Select ##################
 
-=item ('song_select', I<dtime>, I<thing>)
+=item ('song_select', I<dtime>, I<song_number>)
 
 =cut
       #  <song select msg> ::=       F3 <data singlet>
       @E = ( 'song_select',
         $time, unpack('C', substr($$data_r,$Pointer+1,1) )
-      );  # DTime, Thing (?!)
+      );  # DTime, Thing (?!) ... song number?  whatever that is
       $Pointer += 2;  # itself, and 1 data byte
 
     ######################################################################
@@ -790,6 +788,26 @@ And these are the events:
       # DTime
       # What the Sam Scratch would a tune request be doing in a MIDI /file/?
       ++$Pointer;  # itself
+
+###########################################################################
+## ADD MORE META-EVENTS HERE
+#Done:
+# f0 f7 -- sysexes
+# f2 -- song position
+# f3 -- song select
+# f6 -- tune request
+# ff -- metaevent
+###########################################################################
+#TODO:
+# f1 -- MTC Quarter Frame Message.   one data byte follows.
+#     One data byte follows the Status. It's the time code value, a number
+#     from 0 to 127.
+# f8 -- MIDI clock.  no data.
+# fa -- MIDI start.  no data.
+# fb -- MIDI continue.  no data.
+# fc -- MIDI stop.  no data.
+# fe -- Active sense.  no data.
+# f4 f5 f9 fd -- unallocated
 
     ######################################################################
     } elsif($first_byte > 0xF0) { # Some unknown kinda F-series event ####
@@ -963,17 +981,23 @@ sub encode { # encode an event structure, presumably for writing to a file
 
   my $maybe_running_status = not $options_r->{'no_running_status'};
   my $last_status = -1;
+
+  # Here so we don't have to re-my on every iteration
+  my(@E, $event, $dtime, $event_data, $status, $parameters);
  Event_Encode:
   foreach my $event_r (@events) {
     next unless ref($event_r); # what'd such a thing ever be doing in here?
-    my @E = @$event_r;
+    @E = @$event_r;
      # Yes, copy it.  Otherwise the shifting'd corrupt the original
     next unless @E;
 
-    my($event, $dtime) = ( shift(@E), int(shift(@E)) );
+    $event = shift @E;
     next unless length($event);
 
-    my $event_data;
+    $dtime = int shift @E;
+
+    $event_data = '';
+
     if(   # MIDI events -- eligible for running status
        $event    eq 'note_on'
        or $event eq 'note_off'
@@ -984,7 +1008,7 @@ sub encode { # encode an event structure, presumably for writing to a file
        or $event eq 'pitch_wheel_change'  )
     {
 #print "ziiz $event\n";
-      my($status, $parameters);
+      # $status = $parameters = '';
       # This block is where we spend most of the time.  Gotta be tight.
 
       if($event eq 'note_off'){
@@ -1014,6 +1038,8 @@ sub encode { # encode an event structure, presumably for writing to a file
       } elsif($event eq 'pitch_wheel_change'){
 	$status = 0xE0 | (int($E[0]) & 0x0F);
         $parameters =  &write_14_bit(int($E[1]) + 0x2000);
+      } else {
+        die "BADASS FREAKOUT ERROR 31415!";
       }
       # And now the encoding
       push(@data,

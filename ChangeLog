@@ -1,14 +1,84 @@
 Revision history for Perl suite MIDI-Perl
-                                        Time-stamp: "1999-05-13 11:26:43 MDT"
+                                        Time-stamp: "2000-03-05 15:56:59 MST"
 
-1998-08-13  Sean M. Burke  sburke@netadventure.net
+2000-03-05  Sean M. Burke  sburke@netadventure.net
 
-	* Release 0.51:  First CPAN release.  Get it while it's hot!
+	* Release 0.75
 
-1998-08-14  Sean M. Burke  sburke@netadventure.net
+	* ChangeLog now goes recent-to-old, not old-to-recent
 
-	* Release 0.52:  makefile fix.  chimes example in MIDI.pm
-		
+	* Changes in this version were mostly made in August 1999, but
+	just never released:
+
+	* A few optimizations to Event.pm's loops.
+
+	* Opus.pm now does a little more sanity-checking, to avoid
+	attempting reads of insane sizes, such as might be attempted in
+	the case of parsing a mangled file.
+
+1999-05-13  Sean M. Burke  sburke@netadventure.net
+
+	* Release 0.74
+
+	* Just made a few things friendlier to people using perl -w
+	(warnings)
+
+	* Did ya see my article on MIDI-Perl in /The Perl Journal/ #14?
+	See www.tpj.com for back issues, or email me -- I might
+	have it in some sort of electronic format.
+
+1999-01-10  Sean M. Burke  sburke@netadventure.net
+
+	* Release 0.73
+
+	* Just some changes to the docs:
+	Changed the MIDI homepage URL.
+	Added the Langston reference.
+
+1998-11-09  Sean M. Burke  sburke@netadventure.net
+
+	* Release 0.72
+
+	* Shigeaki Kobayashi <xxkoby@pep.ne.jp> pointed out a bug in
+	MIDI::Opus's $opus->draw that was making it always ignore its
+	options hashref.  Fixed.
+	
+	* More carps/croaks instead of warn/dies.
+
+1998-11-04  Sean M. Burke  sburke@netadventure.net
+
+	* Release 0.71
+
+	* Docs for MIDI::Simple are more complete now.
+	
+	* An obscure bit of note_map's behavior changed.
+	But you'd never know, because this is the first version
+	that ever documented note_map at all.
+
+	* Added relative octave specs: o_d3, o_u3.
+
+1998-10-18  Sean M. Burke  sburke@netadventure.net
+
+	* Release 0.70
+	
+	* Some stupid typos in MIDI.pm fixed.
+
+	* MIDI::Simple greatly expanded and changed.  Almost
+	a total rewrite, in fact -- too many changes to explain.
+	Docs are feeble, tho.
+
+	* More modules use strict now.
+
+1998-08-16  Sean M. Burke  sburke@netadventure.net
+
+        * Release 0.62: Hooboy! Third release in a 24-hour period!
+	This time to fix a lame big in MIDI::Score.
+
+1998-08-16  Sean M. Burke  sburke@netadventure.net
+
+	* Release 0.61: Feh.  Forgot to re-comment out the debug code
+	in MIDI::Simple
+
 1998-08-16  Sean M. Burke  sburke@netadventure.net
 
 	* Release 0.60: 
@@ -37,66 +107,10 @@ Revision history for Perl suite MIDI-Perl
 	
 	Added MIDI::Opus::draw and supporting subs.
 
-1998-08-16  Sean M. Burke  sburke@netadventure.net
+1998-08-14  Sean M. Burke  sburke@netadventure.net
 
-	* Release 0.61: Feh.  Forgot to re-comment out the debug code
-	in MIDI::Simple
+	* Release 0.52:  makefile fix.  chimes example in MIDI.pm
 
-1998-08-16  Sean M. Burke  sburke@netadventure.net
+1998-08-13  Sean M. Burke  sburke@netadventure.net
 
-        * Release 0.62: Hooboy! Third release in a 24-hour period!
-	This time to fix a lame big in MIDI::Score.
-
-
-1998-10-18  Sean M. Burke  sburke@netadventure.net
-
-	* Release 0.70
-	
-	* Some stupid typos in MIDI.pm fixed.
-
-	* MIDI::Simple greatly expanded and changed.  Almost
-	a total rewrite, in fact -- too many changes to explain.
-	Docs are feeble, tho.
-
-	* More modules use strict now.
-
-1998-11-04  Sean M. Burke  sburke@netadventure.net
-
-	* Release 0.71
-
-	* Docs for MIDI::Simple are more complete now.
-	
-	* An obscure bit of note_map's behavior changed.
-	But you'd never know, because this is the first version
-	that ever documented note_map at all.
-
-	* Added relative octave specs: o_d3, o_u3.
-
-1998-11-09  Sean M. Burke  sburke@netadventure.net
-
-	* Release 0.72
-
-	* Shigeaki Kobayashi <xxkoby@pep.ne.jp> pointed out a bug in
-	MIDI::Opus's $opus->draw that was making it always ignore its
-	options hashref.  Fixed.
-	
-	* More carps/croaks instead of warn/dies.
-
-1999-01-10  Sean M. Burke  sburke@netadventure.net
-
-	* Release 0.73
-
-	* Just some changes to the docs:
-	Changed the MIDI homepage URL.
-	Added the Langston reference.
-
-1999-05-13  Sean M. Burke  sburke@netadventure.net
-
-	* Release 0.74
-
-	* Just made a few things friendlier to people using perl -w
-	(warnings)
-
-	* Did ya see my article on MIDI-Perl in /The Perl Journal/ #14?
-	See www.tpj.com for back issues, or email me -- I might
-	have it in some sort of electronic format.
+	* Release 0.51:  First CPAN release.  Get it while it's hot!

@@ -1,11 +1,10 @@
-# Time-stamp: "1998-11-07 10:31:22 MST"
+# Time-stamp: "1999-08-15 13:47:10 MDT"
 package MIDI::Score;
 use strict;
 use vars qw($Debug $VERSION);
 use Carp;
 
-$VERSION = 0.72;
-# skipped from .62 right to .72 to keep in step with global versioning
+$VERSION = 0.75;
 
 =head1 NAME
 
@@ -206,7 +205,7 @@ As far as order, the first items are generally the most important:
 
 =item ('song_position', I<starttime>)
 
-=item ('song_select', I<starttime>, I<thing>)
+=item ('song_select', I<starttime>, I<song_number>)
 
 =item ('tune_request', I<starttime>)
 
