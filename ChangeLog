@@ -1,4 +1,4 @@
-                                        Time-stamp: "1998-08-24 10:49:06 MDT"
+                                        Time-stamp: "1998-08-24 12:05:21 MDT"
 
 1998-08-13  Sean M. Burke  sburke@netadventure.net
 
@@ -41,3 +41,7 @@
 	* Release 0.61: Feh.  Forgot to re-comment out the debug code
 	in MIDI::Simple
 
+1998-08-16  Sean M. Burke  sburke@netadventure.net
+
+        * Release 0.62: Hooboy! Third release in a 24-hour period!
+	This time to fix a lame big in MIDI::Score.

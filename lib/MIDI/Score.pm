@@ -1,6 +1,6 @@
-# Time-stamp: "1998-08-23 18:46:22 MDT"
+# Time-stamp: "1998-08-24 12:05:31 MDT"
 package MIDI::Score;
-$VERSION = 0.60;
+$VERSION = 0.62;
 # use strict;
 
 =head1 NAME
@@ -254,14 +254,17 @@ sub score_r_to_events_r {
     next unless ref $note_r;
     if($note_r->[0] eq 'note') {
       my @note_on = @$note_r;
+#print "In:  ", map("<$_>", @note_on), "\n";
       $note_on[0] = 'note_on';
       my $duration = splice(@note_on, 2, 1);
 
-      my @note_off = @$note_r; # /now/ copy it
+      my @note_off = @note_on; # /now/ copy it
       $note_off[0] = 'note_off';
       $note_off[1] += $duration;
       $note_off[4] = 0; # set volume to 0
       push(@events, \@note_on, \@note_off);
+#print "on:  ", map("<$_>", @note_on), "\n";
+#print "off: ", map("<$_>", @note_off), "\n";
     } else {
       push(@events, [@$note_r]);
     }
