@@ -1,4 +1,5 @@
-                                        Time-stamp: "1998-10-18 23:24:39 MDT"
+Revision history for Perl suite MIDI-Perl
+                                        Time-stamp: "1998-11-04 18:44:47 MST"
 
 1998-08-13  Sean M. Burke  sburke@netadventure.net
 
@@ -54,6 +55,19 @@
 	* Some stupid typos in MIDI.pm fixed.
 
 	* MIDI::Simple greatly expanded and changed.  Almost
-	a total rewrite, in fact.  Docs are feeble, tho.
+	a total rewrite, in fact -- too many changes to explain.
+	Docs are feeble, tho.
 
 	* More modules use strict now.
+
+1998-11-04  Sean M. Burke  sburke@netadventure.net
+
+	* Release 0.71
+
+	* Docs for MIDI::Simple are more complete now.
+	
+	* An obscure bit of note_map's behavior changed.
+	But you'd never know, because this is the first version
+	that ever documented note_map at all.
+
+	* Added relative octave specs: o_d3, o_u3.

@@ -1,4 +1,5 @@
-                                        Time-stamp: "1998-08-24 10:49:25 MDT"
+README for MIDI-Perl
+                                        Time-stamp: "1998-10-28 12:44:46 MST"
 
 			      MIDI-Perl
 
@@ -6,8 +7,9 @@ MIDI-Perl is a suite of Perl modules that allows you to read, compose,
 modify, and write MIDI files.  It is largely object-oriented, but if
 you follow the example code, you should be able to get along fine.
 
-See http://alf8.speech.cs.cmu.edu/~sburke/pub/perl_midi/
-for more info.
+See http://www.lenzo.com/~sburke/pub/perl_midi/ for more info.
+(If you register there, you'll get on my list of people to
+send announcements to when I release a new version.)
 
 
 PREREQUISITES
@@ -18,7 +20,9 @@ versions of Perl had a few bugs in BER-encoding, which is used
 extensively in MIDI, but whether those bugs could surface in the use
 of the MIDI modules, I don't know.  So consider yourself warned.
 
-MIDI-Perl uses no external libraries at this time.
+MIDI-Perl uses no external libraries at this time, aside from Carp,
+which has been standard for as long as I can remember.  If you want to
+use MIDI::Opus::draw, you'll also need GD.pm, however.
 
 INSTALLATION
 
@@ -54,7 +58,7 @@ folder.  Read the PODs with Shuck.
 SUPPORT
 
 Questions, bug reports, useful code bits, and suggestions for
-MIDI-Perl should just be sent to be at sburke@netadventure.net
+MIDI-Perl should just be sent to me at sburke@netadventure.net
 
 
 AVAILABILITY

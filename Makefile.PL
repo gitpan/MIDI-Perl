@@ -1,5 +1,5 @@
-# This -*- perl -*- script writes the Makefile for libwww-perl
-# Time-stamp: "1998-08-13 21:16:35 MDT"
+# This -*- perl -*- script writes the Makefile for MIDI-Perl
+# Time-stamp: "1998-10-27 19:59:10 MST"
 require 5.004;
 use strict;
 use ExtUtils::MakeMaker;
@@ -18,3 +18,5 @@ sub libscan
     return '' if $path =~ m/~/;
     $path;
 }
+
+__END__
