@@ -1,5 +1,5 @@
 Revision history for Perl suite MIDI-Perl
-                                        Time-stamp: "1998-11-04 18:44:47 MST"
+                                        Time-stamp: "1998-11-09 11:05:46 MST"
 
 1998-08-13  Sean M. Burke  sburke@netadventure.net
 
@@ -71,3 +71,13 @@ Revision history for Perl suite MIDI-Perl
 	that ever documented note_map at all.
 
 	* Added relative octave specs: o_d3, o_u3.
+
+1998-11-09  Sean M. Burke  sburke@netadventure.net
+
+	* Release 0.72
+
+	* Shigeaki Kobayashi <xxkoby@pep.ne.jp> pointed out a bug in
+	MIDI::Opus's $opus->draw that was making it always ignore its
+	options hashref.  Fixed.
+	
+	* More carps/croaks instead of warn/dies.

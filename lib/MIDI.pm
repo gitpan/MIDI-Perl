@@ -1,5 +1,5 @@
 ###########################################################################
-# Time-stamp: "1998-11-04 18:45:29 MST"
+# Time-stamp: "1998-11-07 14:11:40 MST"
 package MIDI;
 use MIDI::Opus;
 use MIDI::Track;
@@ -8,7 +8,7 @@ use MIDI::Score;
 # Doesn't use MIDI::Simple -- but MIDI::Simple uses this
 
 $Debug = 0; # currently doesn't do anything
-$VERSION = 0.71;
+$VERSION = 0.72;
 
 # MIDI.pm doesn't do much other than 1) 'use' all the necessary submodules
 # 2) provide some publicly useful hashes, 3) house a few private routines
@@ -109,14 +109,7 @@ use to the casual user.
 
 =head1 TO DO
 
-Hopefully provide I<much> better documentation in a later release of
-this module.
-
 Maybe have a MIDI cookbook of commonly used short scripts?
-
-Have more modules carp/croak instead of warn/die.
-
-Have more modules "use strict".
 
 B<A PLEA>: Currently this suite can only read/write MIDI data from/to
 MIDI I<files>.  However, it would be desirable to have realtime access

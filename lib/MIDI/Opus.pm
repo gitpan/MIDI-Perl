@@ -1,11 +1,14 @@
-# Time-stamp: "1998-10-18 23:16:44 MDT"
+# Time-stamp: "1998-11-07 10:09:56 MST"
 ###########################################################################
 package MIDI::Opus;
 use strict;
 use vars qw($Debug $VERSION);
+use Carp;
 
 $Debug = 0;
-$VERSION = 0.61;
+$VERSION = 0.72;
+
+# skipped from .61 right to .72 to keep in step with global versioning
 
 =head1 NAME
 
@@ -314,13 +317,13 @@ sub write_to_file { # method
   my $destination = $_[1];
   my $options_r = ref($_[2]) eq 'HASH' ?  $_[2] : {};
 
-  die "No output file specified" unless length($destination);
+  croak "No output file specified" unless length($destination);
   unless(open(OUT_MIDI, ">$destination")) {
-    die "Can't open $destination for writing\: \"$!\"\n";
+    croak "Can't open $destination for writing\: \"$!\"\n";
   }
   $opus->write_to_handle( *OUT_MIDI{IO}, $options_r);
   close(OUT_MIDI)
-    || die "Can't close filehandle for $destination\: \"$!\"\n";
+    || croak "Can't close filehandle for $destination\: \"$!\"\n";
   return; # nothing useful to return
 }
 
@@ -336,14 +339,14 @@ sub read_from_file { # method, surprisingly enough
   my $source = $_[1];
   my $options_r = ref($_[2]) eq 'HASH' ?  $_[2] : {};
 
-  die "No source file specified" unless length($source);
+  croak "No source file specified" unless length($source);
   unless(open(IN_MIDI, "<$source")) {
-    die "Can't open $source for reading\: \"$!\"\n";
+    croak "Can't open $source for reading\: \"$!\"\n";
   }
   $opus->read_from_handle(*IN_MIDI{IO}, $options_r);
   # Thanks to the EFNet #perl cabal for helping me puzzle out "*IN_MIDI{IO}"
   close(IN_MIDI) ||
-    die "error while closing filehandle for $source\: \"$!\"\n";
+    croak "error while closing filehandle for $source\: \"$!\"\n";
 
   return $opus;
 }
@@ -369,7 +372,7 @@ sub write_to_handle { # method
   binmode($fh);
 
   my $tracks = scalar( $opus->tracks );
-  warn "Writing out an opus with no tracks!\n" if $tracks == 0;
+  carp "Writing out an opus with no tracks!\n" if $tracks == 0;
 
   my $format;
   if( defined($opus->{'format'}) ) {
@@ -421,15 +424,15 @@ sub read_from_handle { # a method, surprisingly enough
   binmode($fh);
 
   my $in = '';
-  die "Can't even read the first 14 bytes from filehandle $fh"
+  croak "Can't even read the first 14 bytes from filehandle $fh"
     unless read($fh, $in, 14);
     # 14 = The expected header length.
 
   my($id, $length, $format, $tracks_expected, $ticks) = unpack('A4Nnnn', $in);
 
-  die "data from handle $fh doesn't start with a MIDI file header"
+  croak "data from handle $fh doesn't start with a MIDI file header"
     unless $id eq 'MThd';
-  die "Unexpected MTHd chunk length in data from handle $fh"
+  croak "Unexpected MTHd chunk length in data from handle $fh"
     unless $length == 6;
   $opus->{'format'} = $format;
   $opus->{'ticks'}  = $ticks;   # ...which may be a munged 'negative' number
@@ -444,7 +447,7 @@ sub read_from_handle { # a method, surprisingly enough
     print "Reading Track \# $track_count into a new track\n" if $Debug;
 
     my($header, $data) = undef;
-    die "Can't read header for track chunk \#$track_count"
+    croak "Can't read header for track chunk \#$track_count"
       unless read($fh, $header, 8);
     my($type, $length) = unpack('A4N', $header);
     read($fh, $data, $length);
@@ -454,16 +457,16 @@ sub read_from_handle { # a method, surprisingly enough
         &MIDI::Track::decode( $type, \$data, $options_r )
       );
     } else {
-      die
+      croak
         "Length of track \#$track_count is off in data from $fh; I wanted $length\, but got "
         . length($data);
     }
   }
 
-  warn
+  carp
     "Header in data from $fh says to expect $tracks_expected tracks, but only $track_count were found\n"
     unless $tracks_expected == $track_count;
-  warn "No tracks read in data from $fh\n" if $track_count == 0;
+  carp "No tracks read in data from $fh\n" if $track_count == 0;
 
   return $opus;
 }
@@ -523,7 +526,7 @@ notes overlapping are not represented at all well.
 
 sub draw { # method
   my $opus = $_[0];
-  my $options_r = ref($_[1]) ? $_[0] : {};
+  my $options_r = ref($_[1]) ? $_[1] : {};
 
   &use_GD(); # will die at runtime if we call this function but it can't use GD
 
@@ -538,7 +541,7 @@ sub draw { # method
 
   my $width = $options_r->{'width'} || 600;
 
-  die "opus can't be drawn because it takes no time" unless $opus_time;
+  croak "opus can't be drawn because it takes no time" unless $opus_time;
   my $pixtix = $opus_time / $width; # Number of ticks a pixel represents
 
   my $im = GD::Image->new($width,127);
@@ -584,7 +587,7 @@ sub draw { # method
   my $GD_used = 0;
   sub use_GD {
     return if $GD_used;
-    eval("use GD;"); die "You don't seem to have GD installed." if $@;
+    eval("use GD;"); croak "You don't seem to have GD installed." if $@;
     $GD_used = 1; return;
   }
   # Why use GD at runtime like this, instead of at compile-time like normal?
@@ -667,15 +670,15 @@ try to support it natively.
 
 =head1 NOTE ON WARN-ING AND DIE-ING
 
-In the case of trying to parse a malformed MIDI file (which is not
-a common thing, in my experience), this module
-(or MIDI::Track or MIDI::Event) may warn() or die().  For this reason,
-you shouldn't use this suite in a case where the script, well, can't
-warn or die -- such as, for example, in a CGI that scans for text events
-in a uploaded MIDI file that may or may not be well-formed.  If this
-I<is> the kind of task you or someone you know may want to do, let me
-know and I'll consider some kind of 'no_die' parameter in future
-releases.
+In the case of trying to parse a malformed MIDI file (which is not a
+common thing, in my experience), this module (or MIDI::Track or
+MIDI::Event) may warn() or die() (Actually, carp() or croak(), but
+it's all the same in the end).  For this reason, you shouldn't use
+this suite in a case where the script, well, can't warn or die -- such
+as, for example, in a CGI that scans for text events in a uploaded
+MIDI file that may or may not be well-formed.  If this I<is> the kind
+of task you or someone you know may want to do, let me know and I'll
+consider some kind of 'no_die' parameter in future releases.
 
 =head1 AUTHOR
 

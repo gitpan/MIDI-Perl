@@ -1,11 +1,13 @@
- # Time-stamp: "1998-10-18 23:19:49 MDT"
+ # Time-stamp: "1998-11-07 10:33:09 MST"
 ###########################################################################
 package MIDI::Track;
 use strict;
 use vars qw($Debug $VERSION);
+use Carp;
 
 $Debug = 0;
-$VERSION = 0.61;
+$VERSION = 0.72;
+# skipped from .61 right to .72 to keep in step with global versioning
 
 =head1 NAME
 
@@ -231,7 +233,7 @@ sub events_r {
   # return (maybe set) a list-reference to the event-structure for this track
   my $this = shift;
   if(@_) {
-    die "parameter for MIDI::Track::events_r must be an array-ref"
+    croak "parameter for MIDI::Track::events_r must be an array-ref"
       unless ref($_[0]);
     $this->{'events'} = $_[0];
   }
@@ -349,7 +351,7 @@ sub encode { # encode a track object into track data (not a chunk)
   # Returns a REFERENCE to track data.
   #
   my $track  = $_[0];
-  die "$track is not a track object!" unless ref($track);
+  croak "$track is not a track object!" unless ref($track);
   my $options_r = ref($_[1]) eq 'HASH' ? $_[1] : {};
 
   my $data = '';
@@ -369,7 +371,7 @@ sub encode { # encode a track object into track data (not a chunk)
         &MIDI::Event::encode($track->{'events'}, $options_r );
     } else {
       $data = ''; # what else to do?
-      warn "Spork 8851\n";
+      warn "Spork 8851\n" if $Debug;
     }
   }
   return \$data;

@@ -1,4 +1,4 @@
-# Time-stamp: "1998-10-18 23:16:48 MDT"
+# Time-stamp: "1998-11-07 10:25:27 MST"
 package MIDI::Event;
 require 5.004;        # I need BER working right, among other things.
 
@@ -6,9 +6,11 @@ use strict;
 use vars qw($Debug $VERSION @MIDI_events @Text_events @Nontext_meta_events
 	    @Meta_events @All_events
 	   );
+use Carp;
 
 $Debug = 0;
-$VERSION = 0.61;
+$VERSION = 0.72;
+# skipped from .61 right to .72 to keep in step with global versioning
 
 
 #First 100 or so lines of this module are straightforward.  The actual
@@ -180,9 +182,9 @@ something), is seen by encode().  The function is fed all of the event
 this function is added to the encoded data stream -- so if you don't
 want to add anything, be sure to return ''.
 
-If no 'unknown_callback' is specified, encode() will C<warn> of the
-unknown event.  To merely block that, just set 'unknown_callback' to
-C<sub{return('')}>
+If no 'unknown_callback' is specified, encode() will C<warn> (well,
+C<carp>) of the unknown event.  To merely block that, just set
+'unknown_callback' to C<sub{return('')}>
 
 =item 'no_eot_magic' => 0 or 1
 
@@ -248,7 +250,8 @@ sub copy_structure {
   # Takes a REFERENCE to an event structure (a ref to a LoL),
   # and returns a REFERENCE to a copy of that structure.
   my $events_r = $_[0];
-  die "\$_[0] ($events_r) isn't a reference for MIDI::Event::copy()!!"
+  croak
+    "\$_[0] ($events_r) isn't a reference for MIDI::Event::copy_structure()!!"
     unless ref($events_r);
   return [  map( [@$_], @$events_r )  ];
 }
@@ -293,7 +296,7 @@ sub decode { # decode track data into an event structure
   my $options_r = ref($_[1]) eq 'HASH' ? $_[1] : {};
   my @events = ();
   unless(ref($data_r) eq 'SCALAR') {
-    warn "\$_[0] is not a data reference!";
+    carp "\$_[0] is not a data reference, in MIDI::Event::decode!";
     return [];
   }
 
@@ -304,7 +307,8 @@ sub decode { # decode track data into an event structure
         @{ $options_r->{'exclude'} }
       } = undef;
     } else {
-      die "parameter for option 'exclude' must be a list reference!"
+      croak
+        "parameter for MIDI::Event::decode option 'exclude' must be a listref!"
 	if $options_r->{'exclude'};
       # If it's false, carry on silently
     }
@@ -318,7 +322,8 @@ sub decode { # decode track data into an event structure
 	  @{ $options_r->{'include'} }
 	};
       } else {
-	die "parameter for option 'include' must be a list reference!"
+	croak
+        "parameter for decode option 'include' must be a listref!"
 	  if $options_r->{'include'};
 	# If it's false, carry on silently
       }
@@ -332,7 +337,7 @@ sub decode { # decode track data into an event structure
     if( ref($options_r->{'event_callback'}) eq 'CODE' ) {
       $event_callback = $options_r->{'event_callback'};
     } else {
-      warn "parameter for option 'event_callback' is not a code reference!\n";
+      carp "parameter for decode option 'event_callback' is not a coderef!\n";
     }
   }
   my $exclusive_event_callback = undef;
@@ -340,7 +345,7 @@ sub decode { # decode track data into an event structure
     if( ref($options_r->{'exclusive_event_callback'}) eq 'CODE' ) {
       $exclusive_event_callback = $options_r->{'exclusive_event_callback'};
     } else {
-      warn "parameter for option 'exclusive_event_callback' is not a code reference!\n";
+      carp "parameter for decode option 'exclusive_event_callback' is not a coderef!\n";
     }
   }
 
@@ -918,7 +923,7 @@ sub encode { # encode an event structure, presumably for writing to a file
   my @data = (); # what I'll store chunks of data in
   my $data = ''; # what I'll join @data all together into
 
-  die "encode's argument must be an array reference!"
+  croak "MIDI::Event::encode's argument must be an array reference!"
     unless ref($events_r); # better be an array!
   my @events = @$events_r;
   # Yes, copy it.  This is so my end_track magic won't corrupt the original

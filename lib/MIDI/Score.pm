@@ -1,10 +1,11 @@
-# Time-stamp: "1998-10-18 23:20:41 MDT"
+# Time-stamp: "1998-11-07 10:31:22 MST"
 package MIDI::Score;
 use strict;
 use vars qw($Debug $VERSION);
+use Carp;
 
-$VERSION = 0.62;
-# use strict;
+$VERSION = 0.72;
+# skipped from .62 right to .72 to keep in step with global versioning
 
 =head1 NAME
 
@@ -249,7 +250,7 @@ sub score_r_to_events_r {
   my $score_r = $_[0];
   my $time = 0;
   my @events = ();
-  die "score_r_to_events_r's first arg must be a listref"
+  croak "MIDI::Score::score_r_to_events_r's first arg must be a listref"
     unless ref($score_r);
 
   # First, turn instances of 'note' into 'note_on' and 'note_off':
@@ -338,7 +339,7 @@ with a count of the number of ticks that structure takes to play
 sub events_r_to_score_r {
   # Returns the score_r AND the total tick time
   my $events_r = $_[0];
-  die "first argument to events_to_score is not a listref!"
+  croak "first argument to MIDI::Score::events_to_score is not a listref!"
     unless $events_r;
   my $options_r = ref($_[1]) ? $_[1] : {};
 
@@ -410,7 +411,7 @@ a count of the number of ticks that structure takes to play
 sub score_r_time {
   # returns the duration of the score you pass a reference to
   my $score_r = $_[0];
-  die "arg 1 of score_r_time isn't a ref" unless ref($score_r);
+  croak "arg 1 of MIDI::Score::score_r_time isn't a ref" unless ref $score_r;
   my $track_time = 0;
   foreach my $event_r (@$score_r) {
     next unless @$event_r;
