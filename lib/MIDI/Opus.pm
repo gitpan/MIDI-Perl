@@ -1,5 +1,5 @@
 
-# Time-stamp: "2000-05-13 22:52:59 MDT"
+# Time-stamp: "2002-11-16 01:57:16 MST"
 require 5;
 package MIDI::Opus;
 use strict;
@@ -724,6 +724,13 @@ of task you or someone you know may want to do, let me know and I'll
 consider some kind of 'no_die' parameter in future releases.
 (Or just trap the die in an eval { } around your call to anything you
 think you could die.)
+
+=head1 COPYRIGHT 
+
+Copyright (c) 1998-2002 Sean M. Burke. All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
 
 =head1 AUTHOR
 

@@ -1,5 +1,5 @@
 
-# Time-stamp: "2000-05-13 22:55:22 MDT"
+# Time-stamp: "2002-11-16 01:57:00 MST"
 require 5;
 package MIDI::Track;
 use strict;
@@ -410,6 +410,13 @@ sub decode { # returns a new object, but doesn't accept constructor syntax
 ###########################################################################
 
 =back
+
+=head1 COPYRIGHT 
+
+Copyright (c) 1998-2002 Sean M. Burke. All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
 
 =head1 AUTHOR
 

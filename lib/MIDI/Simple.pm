@@ -1,5 +1,5 @@
 
-# Time-stamp: "2000-05-20 18:06:28 MDT"
+# Time-stamp: "2002-11-16 02:08:32 MST"
 require 5;
 package MIDI::Simple;
 use MIDI;
@@ -14,7 +14,7 @@ use subs qw(&make_opus($\@) &write_score($$\@)
            );
 require Exporter;
 @ISA = qw(Exporter);
-$VERSION = 0.77;
+$VERSION = 0.80;
 $Debug = 0;
 
 @EXPORT = qw(
@@ -363,9 +363,9 @@ Volume, or Notes.
 
 Here are the kinds of parameters you can use in calls to n/r/noop:
 
-* A numeric B<volume> parameter.  This has the form "v" followed by a
+* A numeric B<volume> parameter.  This has the form "V" followed by a
 positive integer in the range 0 (completely inaudible?) to 127 (AS
-LOUD AS POSSIBLE).  Example: "v90" sets Volume to 90.
+LOUD AS POSSIBLE).  Example: "V90" sets Volume to 90.
 
 * An alphanumeric B<volume> parameter.  This is a key from the hash
 %MIDI::Simple::Volume.  Current legal values are "ppp", "pp", "p",
@@ -628,7 +628,7 @@ sub _parse_options { # common parser for n/r/noop options
 
     if($arg      =~ m<^d(\d+)$>s) {   # numeric duration spec
       ${$it->{"Duration"}} = $1;
-    } elsif($arg =~ m<^v(\d+)$>s) {   # numeric volume spec
+    } elsif($arg =~ m<^[vV](\d+)$>s) {   # numeric volume spec
       croak "Volume out of range: $1" if $1 > 127;
       ${$it->{"Volume"}} = $1;
     } elsif($arg eq 'rest') {         # 'rest' clears the note list
@@ -1912,6 +1912,13 @@ sub Self { # pointless as a method -- but as a sub, useful if
 =cut
 
 ###########################################################################
+
+=head1 COPYRIGHT 
+
+Copyright (c) 1998-2002 Sean M. Burke. All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
 
 =head1 AUTHOR
 

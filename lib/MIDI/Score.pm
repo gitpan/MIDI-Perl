@@ -1,5 +1,5 @@
 
-# Time-stamp: "2000-08-21 15:50:51 MDT"
+# Time-stamp: "2002-11-16 01:57:08 MST"
 require 5;
 package MIDI::Score;
 use strict;
@@ -453,6 +453,13 @@ sub dump_score {
 ###########################################################################
 
 =back
+
+=head1 COPYRIGHT 
+
+Copyright (c) 1998-2002 Sean M. Burke. All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
 
 =head1 AUTHOR
 

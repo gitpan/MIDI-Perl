@@ -1,6 +1,18 @@
 Revision history for Perl suite MIDI-Perl
-                                        Time-stamp: "2000-08-21 15:51:59 MDT"
+                                        Time-stamp: "2002-11-16 02:08:53 MST"
 
+2002-08-21  Sean M. Burke  sburke@cpan.org
+
+	* Release 0.80 -- just a docfix release, basically
+
+	* Removing the out-dated Filespec.pod file.
+
+	* To work around vstrings in Perl 5.6 (etc), MIDI::Simple volume
+	specifications can now be expressed as V64 (etc), whereas
+	previously you could only do v64.
+	Bumping MIDI::SImple version up to 0.80.
+	
+	
 2000-08-21  Sean M. Burke  sburke@cpan.org
 
 	* Release 0.79

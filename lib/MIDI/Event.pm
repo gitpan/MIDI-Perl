@@ -1,5 +1,5 @@
 
-# Time-stamp: "2000-05-13 22:53:53 MDT"
+# Time-stamp: "2002-11-16 01:57:27 MST"
 require 5.004;        # I need BER working right, among other things.
 package MIDI::Event;
 
@@ -1216,6 +1216,13 @@ at all in a C<raw_data> event.)
                                    <data singlet>
  27. <song position stat byte>::=F2
  28. <song select stat byte> ::= F3
+
+=head1 COPYRIGHT 
+
+Copyright (c) 1998-2002 Sean M. Burke. All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
 
 =head1 AUTHOR
 

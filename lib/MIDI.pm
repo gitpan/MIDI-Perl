@@ -1,5 +1,5 @@
 
-# Time-stamp: "2000-08-21 15:50:20 MDT"
+# Time-stamp: "2002-11-16 02:11:47 MST"
 require 5;
 package MIDI;
 use strict;
@@ -12,7 +12,7 @@ use MIDI::Score;
 # Doesn't use MIDI::Simple -- but MIDI::Simple uses this
 
 $Debug = 0; # currently doesn't do anything
-$VERSION = 0.79;
+$VERSION = 0.80;
 
 # MIDI.pm doesn't do much other than 1) 'use' all the necessary submodules
 # 2) provide some publicly useful hashes, 3) house a few private routines
@@ -20,7 +20,7 @@ $VERSION = 0.79;
 
 =head1 NAME
 
-MIDI -- read, compose, modify, and write MIDI files.
+MIDI - read, compose, modify, and write MIDI files
 
 =head1 SYNOPSIS
 
@@ -369,6 +369,13 @@ languages. --SMB]
 
 I'll keep a list of other references and good stuff at
 the URL C<http://www.speech.cs.cmu.edu/~sburke/pub/perl_midi/>
+
+=head1 COPYRIGHT 
+
+Copyright (c) 1998-2002 Sean M. Burke. All rights reserved.
+
+This library is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
 
 =head1 AUTHOR
 
