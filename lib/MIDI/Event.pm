@@ -1,10 +1,15 @@
-# Time-stamp: "1998-08-23 16:58:22 MDT"
+# Time-stamp: "1998-10-18 23:16:48 MDT"
 package MIDI::Event;
 require 5.004;        # I need BER working right, among other things.
-no strict; # maybe we'll be strict some day
+
+use strict;
+use vars qw($Debug $VERSION @MIDI_events @Text_events @Nontext_meta_events
+	    @Meta_events @All_events
+	   );
+
 $Debug = 0;
-$VERSION = 0.60;
-# use strict;
+$VERSION = 0.61;
+
 
 #First 100 or so lines of this module are straightforward.  The actual
 # encoding logic below that is scary, tho.

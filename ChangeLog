@@ -1,4 +1,4 @@
-                                        Time-stamp: "1998-08-24 12:05:21 MDT"
+                                        Time-stamp: "1998-10-18 23:24:39 MDT"
 
 1998-08-13  Sean M. Burke  sburke@netadventure.net
 
@@ -45,3 +45,15 @@
 
         * Release 0.62: Hooboy! Third release in a 24-hour period!
 	This time to fix a lame big in MIDI::Score.
+
+
+1998-10-18  Sean M. Burke  sburke@netadventure.net
+
+	* Release 0.70
+	
+	* Some stupid typos in MIDI.pm fixed.
+
+	* MIDI::Simple greatly expanded and changed.  Almost
+	a total rewrite, in fact.  Docs are feeble, tho.
+
+	* More modules use strict now.

@@ -1,5 +1,8 @@
-# Time-stamp: "1998-08-24 12:05:31 MDT"
+# Time-stamp: "1998-10-18 23:20:41 MDT"
 package MIDI::Score;
+use strict;
+use vars qw($Debug $VERSION);
+
 $VERSION = 0.62;
 # use strict;
 

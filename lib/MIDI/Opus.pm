@@ -1,9 +1,11 @@
-# Time-stamp: "1998-08-23 14:01:34 MDT"
+# Time-stamp: "1998-10-18 23:16:44 MDT"
 ###########################################################################
 package MIDI::Opus;
+use strict;
+use vars qw($Debug $VERSION);
+
 $Debug = 0;
-# use strict;
-$VERSION = 0.60;
+$VERSION = 0.61;
 
 =head1 NAME
 

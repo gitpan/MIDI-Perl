@@ -1,14 +1,14 @@
 ###########################################################################
-# Time-stamp: "1998-08-24 12:03:17 MDT"
+# Time-stamp: "1998-10-18 23:14:14 MDT"
 package MIDI;
 use MIDI::Opus;
 use MIDI::Track;
 use MIDI::Event;
 use MIDI::Score;
-# doesn't use MIDI::Simple
+# Doesn't use MIDI::Simple
 
 $Debug = 0; # currently doesn't do anything
-$VERSION = 0.62;
+$VERSION = 0.70;
 
 # MIDI.pm doesn't do much other than 1) 'use' all the necessary submodules
 # 2) provide some publicly useful hashes, 3) house a few private routines
@@ -48,8 +48,8 @@ From FOLDOC (C<http://wombat.doc.ic.ac.uk/foldoc/>):
 B<MIDI, Musical Instrument Digital Interface>
                                        
 E<lt>multimedia, file formatE<gt> (MIDI /mi'-dee/, /mee'-dee/) A
-hardware specification and protocol used to communicate note and effect
-information between synthesisers, computers, music keyboards,
+hardware specification and protocol used to communicate note and
+effect information between synthesisers, computers, music keyboards,
 controllers and other electronic music devices. [...]
 
 The basic unit of information is a "note on/off" event which includes
@@ -78,27 +78,26 @@ guts of existing MIDI files, read the pods in the order given above.
 But if you aim to compose music with this suite, read this pod, then
 L<MIDI::Score> and L<MIDI::Simple>, and then skim the rest.
 
-(For your reference, there is also a document in pod format which is not
-itself an actual module: L<MIDI::Filespec>.  It is an old version
+(For your reference, there is also a document in pod format which is
+not itself an actual module: L<MIDI::Filespec>.  It is an old version
 of the MIDI file specification.)
 
 =head1 INTRODUCTION
 
-This suite of modules is basically object-oriented, with the exception of
-MIDI::Simple.  MIDI opuses ("songs") are represented as objects belonging
-to the class MIDI::Opus.  An opus contains tracks, which are objects
-belonging to the class MIDI::Track.  A track will generally contain a list
-of events, where each event is a list consisting of a command, a
-delta-time, and some number of parameters.  In other words, opuses and
-tracks are objects, and the events in a track comprise a LoL (and if you
-don't know what an LoL is, you must read L<perllol>).
+This suite of modules is basically object-oriented, with the exception
+of MIDI::Simple.  MIDI opuses ("songs") are represented as objects
+belonging to the class MIDI::Opus.  An opus contains tracks, which are
+objects belonging to the class MIDI::Track.  A track will generally
+contain a list of events, where each event is a list consisting of a
+command, a delta-time, and some number of parameters.  In other words,
+opuses and tracks are objects, and the events in a track comprise a
+LoL (and if you don't know what an LoL is, you must read L<perllol>).
 
 Furthermore, for some purposes it's useful to analyze the totality of
-a track's events as a "score" -- where a score consists of notes
-where each event is a list consisting of a command, a
-time offset from the start of the track, and some number of parameters.
-This is the level of abstraction that MIDI::Score and MIDI::Simple deal
-with. 
+a track's events as a "score" -- where a score consists of notes where
+each event is a list consisting of a command, a time offset from the
+start of the track, and some number of parameters.  This is the level
+of abstraction that MIDI::Score and MIDI::Simple deal with.
 
 While this suite does provide some functionality accessible only if
 you're comfortable with various kinds of references, and while there
@@ -110,12 +109,10 @@ use to the casual user.
 
 =head1 TO DO
 
-Hopefully provide I<much> better documentation in a later
-release of this module.
+Hopefully provide I<much> better documentation in a later release of
+this module.
 
 Maybe have a MIDI cookbook of commonly used short scripts?
-
-Have a more abstract level of abstraction than MIDI events, such that
 
 Have more modules carp/croak instead of warn/die.
 
@@ -137,8 +134,8 @@ as much in the pudding as the devil is in the details.
 =head1 GOODIES
 
 The bare module MIDI.pm doesn't I<do> much more than C<use> the
-necessary component submodules (i.e., all except MIDI::Simple).
-But it does provide some hashes you might find useful:
+necessary component submodules (i.e., all except MIDI::Simple).  But
+it does provide some hashes you might find useful:
 
 =over
 
@@ -150,8 +147,8 @@ But it does provide some hashes you might find useful:
 =item C<%MIDI::note2number> and C<%MIDI::number2note>
 
 C<%MIDI::number2note> correponds MIDI note numbers to a more
-comprehensible representation (e.g., 68 to 'Gs4', for G-sharp, octave 4);
-C<%MIDI::note2number> is the reverse.  Have a look at the source
+comprehensible representation (e.g., 68 to 'Gs4', for G-sharp, octave
+4); C<%MIDI::note2number> is the reverse.  Have a look at the source
 to see the contents of the hash.
 
 =cut
@@ -198,7 +195,7 @@ to see the contents of the hash.
 
 #16: Organ
  "Drawbar Organ", "Percussive Organ", "Rock Organ", "Church Organ",
- "Reed Organ", "Accoridan", "Harmonica", "Tango Accordian",
+ "Reed Organ", "Accordion", "Harmonica", "Tango Accordion",
 # Guitar
  "Acoustic Guitar(nylon)", "Acoustic Guitar(steel)",
  "Electric Guitar(jazz)", "Electric Guitar(clean)",
@@ -252,7 +249,8 @@ to see the contents of the hash.
 
 ###########################################################################
 #     ****    TABLE 2  -  General MIDI Percussion Key Map    ****
-# (assigns drum sounds to note numbers. MIDI Channel 10 is for percussion)
+# (assigns drum sounds to note numbers. MIDI Channel 9 is for percussion)
+# (it's channel 10 if you start counting at 1.  But WE start at 0.)
 
 =item C<%MIDI::notenum2percussion> and C<%MIDI::percussion2notenum>
 
@@ -332,9 +330,9 @@ lack a status byte and may have to be interpreted as having the same
 event command as I<its> previous event, and so on back.
 
 B<score>: a structure of notes like an event structure, but where
-notes are represented as single items, and where timing of items
-is absolute from the beginning of the track, instead of being
-represented in delta-times.
+notes are represented as single items, and where timing of items is
+absolute from the beginning of the track, instead of being represented
+in delta-times.
 
 B<song>: what some MIDI specs call a song, I call an opus.
 

@@ -1,8 +1,11 @@
- # Time-stamp: "1998-08-23 19:55:35 MDT"
+ # Time-stamp: "1998-10-18 23:19:49 MDT"
 ###########################################################################
 package MIDI::Track;
+use strict;
+use vars qw($Debug $VERSION);
+
 $Debug = 0;
-$VERSION = 0.60;
+$VERSION = 0.61;
 
 =head1 NAME
 
@@ -327,7 +330,7 @@ sub dump { # dump a track's contents
 	  : (),
 	$indent, "  'events' => [  # ", scalar(@events), " events.\n",
        );
-  foreach $event (@events) {
+  foreach my $event (@events) {
     &MIDI::Event::dump(@$event);
     # was: print( $indent, "    [", &MIDI::_dump_quote(@$event), "],\n" );
   }
@@ -356,7 +359,7 @@ sub encode { # encode a track object into track data (not a chunk)
     $data = $track->{'data'};
     # warn "Encoding 0-length track data!" unless length $data;
   } else { # Data is not defined for this track.  Parse the events
-    if( ($type eq 'MTrk'  or  length($type) == 0)
+    if( ($track->{'type'} eq 'MTrk'  or  length($track->{'type'}) == 0)
         and defined($track->{'events'})
              # not just exists -- but DEFINED!
         and ref($track->{'events'})
