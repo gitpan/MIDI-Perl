@@ -1,5 +1,5 @@
 ###########################################################################
-# Time-stamp: "1998-11-07 14:11:40 MST"
+# Time-stamp: "1999-01-10 13:09:57 MST"
 package MIDI;
 use MIDI::Opus;
 use MIDI::Track;
@@ -8,7 +8,7 @@ use MIDI::Score;
 # Doesn't use MIDI::Simple -- but MIDI::Simple uses this
 
 $Debug = 0; # currently doesn't do anything
-$VERSION = 0.72;
+$VERSION = 0.73;
 
 # MIDI.pm doesn't do much other than 1) 'use' all the necessary submodules
 # 2) provide some publicly useful hashes, 3) house a few private routines
@@ -354,9 +354,17 @@ integers.
 =head1 REFERENCES
 
 Christian Braut.  I<The Musician's Guide to Midi.>  ISBN 0782112854.
+[This one is indispensible --SMB]
+
+Langston, Peter S.  1998. "Little Music Languages", p.587-656 in:
+Salus, Peter H,. editor in chief, /Handbook of Programming Languages/,
+vol.  3.  MacMillan Technical, 1998.  [The volume it's in is probably
+not worth the money, but see if you can at least glance at this
+article anyway.  It's not often you see 70 pages written on music
+languages. --SMB]
 
 I'll keep a list of other references and good stuff at
-the URL C<http://alf8.speech.cs.cmu.edu/~sburke/pub/perl_midi/>
+the URL C<http://www.speech.cs.cmu.edu/~sburke/pub/perl_midi/>
 
 =head1 AUTHOR
 

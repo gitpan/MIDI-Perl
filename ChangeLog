@@ -1,5 +1,5 @@
 Revision history for Perl suite MIDI-Perl
-                                        Time-stamp: "1998-11-09 11:05:46 MST"
+                                        Time-stamp: "1999-01-10 13:12:58 MST"
 
 1998-08-13  Sean M. Burke  sburke@netadventure.net
 
@@ -81,3 +81,12 @@ Revision history for Perl suite MIDI-Perl
 	options hashref.  Fixed.
 	
 	* More carps/croaks instead of warn/dies.
+
+1999-01-10  Sean M. Burke  sburke@netadventure.net
+
+	* Release 0.73
+
+	* Just some changes to the docs:
+	Changed the MIDI homepage URL.
+	Added the Langston reference.
+

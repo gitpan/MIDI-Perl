@@ -1,5 +1,5 @@
 README for MIDI-Perl
-                                        Time-stamp: "1998-10-28 12:44:46 MST"
+                                        Time-stamp: "1999-01-10 13:12:45 MST"
 
 			      MIDI-Perl
 
@@ -7,7 +7,7 @@ MIDI-Perl is a suite of Perl modules that allows you to read, compose,
 modify, and write MIDI files.  It is largely object-oriented, but if
 you follow the example code, you should be able to get along fine.
 
-See http://www.lenzo.com/~sburke/pub/perl_midi/ for more info.
+See http://www.speech.cs.cmu.edu/~sburke/pub/perl_midi/ for more info.
 (If you register there, you'll get on my list of people to
 send announcements to when I release a new version.)
 
