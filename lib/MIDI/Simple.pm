@@ -1,4 +1,4 @@
-# Time-stamp: "1998-08-23 19:41:48 MDT"
+# Time-stamp: "1998-08-24 10:50:30 MDT"
 package MIDI::Simple;
 use MIDI;
 use Carp;
@@ -10,7 +10,7 @@ use Carp;
 require Exporter;
 @ISA = qw(Exporter);
 @EXPORT = qw(new_score n r make_opus write_score read_score dump_score);
-$VERSION = 0.60;
+$VERSION = 0.61;
 $Debug = 1;
 
 =head1 NAME
@@ -428,7 +428,7 @@ sub n { # a note
     ];
   push @{"$package\::Score"}, $note;
   ${"$package\::Time"} += ${"$package\::Duration"};
-  print map("<$_> ", @$note ), "\n" if $Debug;
+#  print map("<$_> ", @$note ), "\n" if $Debug;
   return;
 }
 ###########################################################################
@@ -481,7 +481,7 @@ sub _parse_options { # common parser for n and r options
       my $octave = ${"$package\::Octave"};
       my $o_spec = $2;
 
-      print "note<$1> => <$note> ; octave<$2>\n" if $Debug;
+#      print "note<$1> => <$note> ; octave<$2>\n" if $Debug;
 
       if (! length($o_spec)){
         # noop

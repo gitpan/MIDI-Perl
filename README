@@ -1,4 +1,4 @@
-                                        Time-stamp: "1998-08-13 21:53:58 MDT"
+                                        Time-stamp: "1998-08-24 10:49:25 MDT"
 
 			      MIDI-Perl
 
@@ -47,7 +47,7 @@ POD is readable with the 'perldoc' utility.
 MACPERL INSTALLATION NOTES
 
 Don't bother with the makefiles.
-Just move MIDI.pm and the "MIDI" filder into your MacPerl library
+Just move MIDI.pm and the "MIDI" folder into your MacPerl library
 folder.  Read the PODs with Shuck.
 
 

@@ -1,5 +1,5 @@
 ###########################################################################
-# Time-stamp: "1998-08-23 17:55:58 MDT"
+# Time-stamp: "1998-08-24 10:50:53 MDT"
 package MIDI;
 use MIDI::Opus;
 use MIDI::Track;
@@ -8,7 +8,7 @@ use MIDI::Score;
 # doesn't use MIDI::Simple
 
 $Debug = 0; # currently doesn't do anything
-$VERSION = 0.60;
+$VERSION = 0.61;
 
 # MIDI.pm doesn't do much other than 1) 'use' all the necessary submodules
 # 2) provide some publicly useful hashes, 3) house a few private routines

@@ -1,4 +1,4 @@
-                                        Time-stamp: "1998-08-23 18:01:07 MDT"
+                                        Time-stamp: "1998-08-24 10:49:06 MDT"
 
 1998-08-13  Sean M. Burke  sburke@netadventure.net
 
@@ -35,3 +35,9 @@
 	MIDI::Simple.
 	
 	Added MIDI::Opus::draw and supporting subs.
+
+1998-08-16  Sean M. Burke  sburke@netadventure.net
+
+	* Release 0.61: Feh.  Forgot to re-comment out the debug code
+	in MIDI::Simple
+
