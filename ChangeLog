@@ -1,5 +1,5 @@
 Revision history for Perl suite MIDI-Perl
-                                        Time-stamp: "1999-01-10 13:12:58 MST"
+                                        Time-stamp: "1999-05-13 11:26:43 MDT"
 
 1998-08-13  Sean M. Burke  sburke@netadventure.net
 
@@ -90,3 +90,13 @@ Revision history for Perl suite MIDI-Perl
 	Changed the MIDI homepage URL.
 	Added the Langston reference.
 
+1999-05-13  Sean M. Burke  sburke@netadventure.net
+
+	* Release 0.74
+
+	* Just made a few things friendlier to people using perl -w
+	(warnings)
+
+	* Did ya see my article on MIDI-Perl in /The Perl Journal/ #14?
+	See www.tpj.com for back issues, or email me -- I might
+	have it in some sort of electronic format.

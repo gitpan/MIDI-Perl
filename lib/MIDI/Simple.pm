@@ -1,4 +1,4 @@
-# Time-stamp: "1998-11-05 10:57:22 MST"
+# Time-stamp: "1999-05-13 11:13:46 MDT"
 package MIDI::Simple;
 use MIDI;
 use Carp;
@@ -11,7 +11,7 @@ use vars qw(@ISA @EXPORT $VERSION $Debug
            );
 require Exporter;
 @ISA = qw(Exporter);
-$VERSION = 0.71;
+$VERSION = 0.74;
 $Debug = 0;
 
 @EXPORT = qw(
@@ -672,7 +672,8 @@ sub _parse_options { # common parser for n/r/noop options
       print "note<$1> => <$note> ; octave_spec<$2> Octave<$octave>\n"
         if $Debug;
 
-      if (! length($o_spec)){    # it's a bare note like "C" or "Bflat"
+      if(! (defined($o_spec) && length($o_spec))){
+         # it's a bare note like "C" or "Bflat"
         # noop
       } elsif ($o_spec =~ m<^(\d+)$>s) {      # absolute! (alphanumeric)
         ${$it->{"Octave"}} = $octave = $1;
@@ -733,7 +734,10 @@ sub new_score {
   my $p1 = $_[0];
   my $it;
 
-  if($p1 eq 'MIDI::Simple'  or  ref($p1) eq 'MIDI::Simple') { # I'm a method!
+  if(
+    defined($p1) &&
+    ($p1 eq 'MIDI::Simple'  or  ref($p1) eq 'MIDI::Simple')
+  ) { # I'm a method!
     print "~ new_score as a MIDI::Simple constructor\n" if $Debug;
     $it = bless {};
     &_init_score($it);

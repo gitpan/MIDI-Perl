@@ -1,4 +1,4 @@
-# Time-stamp: "1998-11-07 10:09:56 MST"
+# Time-stamp: "1999-05-13 11:17:40 MDT"
 ###########################################################################
 package MIDI::Opus;
 use strict;
@@ -6,9 +6,7 @@ use vars qw($Debug $VERSION);
 use Carp;
 
 $Debug = 0;
-$VERSION = 0.72;
-
-# skipped from .61 right to .72 to keep in step with global versioning
+$VERSION = 0.74;
 
 =head1 NAME
 
@@ -83,7 +81,7 @@ undocumented, as you should access it only thru here.)
 sub new {
   # Make a new MIDI opus object.
   my $class = shift;
-  my $options_r = ref($_[0]) eq 'HASH' ? $_[0] : {};
+  my $options_r = (defined($_[0]) and ref($_[0]) eq 'HASH') ? $_[0] : {};
 
   my $this = bless( {}, $class );
 
@@ -92,9 +90,17 @@ sub new {
   return $this if $options_r->{'no_opus_init'}; # bypasses all init.
   $this->_init( $options_r );
 
-  if( length( $options_r->{'from_file'} ) ){
+  if(
+     exists( $options_r->{'from_file'} ) &&
+     defined( $options_r->{'from_file'} ) &&
+     length( $options_r->{'from_file'} )
+  ){
     $this->read_from_file( $options_r->{'from_file'}, $options_r );
-  } elsif( length( $options_r->{'from_handle'} ) ){
+  } elsif(
+     exists( $options_r->{'from_handle'} ) &&
+     defined( $options_r->{'from_handle'} ) &&
+     length( $options_r->{'from_handle'} )
+  ){
     $this->read_from_handle( $options_r->{'from_handle'}, $options_r );
   }
   return $this;

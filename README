@@ -1,5 +1,5 @@
 README for MIDI-Perl
-                                        Time-stamp: "1999-01-10 13:12:45 MST"
+                                        Time-stamp: "1999-05-13 11:24:38 MDT"
 
 			      MIDI-Perl
 
@@ -70,4 +70,5 @@ find a CPAN site near you.
 
 COPYRIGHT
 
-Copyright 1998, Sean M. Burke <sburke@netadventure.net>, all rights reserved.
+Copyright 1998,1999 by Sean M. Burke <sburke@netadventure.net>, all
+rights reserved.
