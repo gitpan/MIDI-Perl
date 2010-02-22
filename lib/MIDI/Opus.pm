@@ -1,5 +1,5 @@
 
-# Time-stamp: "2002-11-16 01:57:16 MST"
+# Time-stamp: "2010-02-21 12:55:27 conklin"
 require 5;
 package MIDI::Opus;
 use strict;
@@ -7,7 +7,7 @@ use vars qw($Debug $VERSION);
 use Carp;
 
 $Debug = 0;
-$VERSION = 0.76;
+$VERSION = 0.82;
 
 =head1 NAME
 
@@ -250,6 +250,32 @@ sub info { # read-only
     'ticks'  => $this->{'ticks'}, # I want a scalar
     'tracks' => $this->{'tracks'} # I want a ref to a list
   );
+}
+
+=item the method $new_opus = $opus->quantize
+
+This grid quantizes an opus.  It simply calls MIDI::Score::quantize on
+every track.  See docs for MIDI::Score::quantize.  Original opus is
+destroyed, use MIDI::Opus::copy if you want to take a copy first.
+
+=cut
+
+sub quantize {
+  my $this = $_[0];
+  my $options_r = ref($_[1]) eq 'HASH' ? $_[1] : {};
+  my $grid = $options_r->{grid};
+  if ($grid < 1) {carp "bad grid $grid in MIDI::Opus::quantize!"; return;}
+  return if ($grid eq 1); # no quantizing to do
+  my $qd = $options_r->{durations}; # quantize durations?
+  my $new_tracks_r = [];
+  foreach my $track ($this->tracks) {
+      my $score_r = MIDI::Score::events_r_to_score_r($track->events_r);
+      my $new_score_r = MIDI::Score::quantize($score_r,{grid=>$grid,durations=>$qd});
+      my $events_r = MIDI::Score::score_r_to_events_r($new_score_r);
+      my $new_track = MIDI::Track->new({events_r=>$events_r});
+      push @{$new_tracks_r}, $new_track;
+  }
+  $this->tracks_r($new_tracks_r);
 }
 
 ###########################################################################
@@ -732,9 +758,11 @@ Copyright (c) 1998-2002 Sean M. Burke. All rights reserved.
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
 
-=head1 AUTHOR
+=head1 AUTHORS
 
-Sean M. Burke C<sburke@cpan.org>
+Sean M. Burke C<sburke@cpan.org> (until 2010)
+
+Darrell Conklin C<conklin@cpan.org> (from 2010)
 
 =cut
 

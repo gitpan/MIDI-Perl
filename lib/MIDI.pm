@@ -1,5 +1,5 @@
 
-# Time-stamp: "2005-01-29 16:22:15 AST"
+# Time-stamp: "2010-02-14 21:39:10 conklin"
 require 5;
 package MIDI;
 use strict;
@@ -9,10 +9,11 @@ use MIDI::Opus;
 use MIDI::Track;
 use MIDI::Event;
 use MIDI::Score;
+
 # Doesn't use MIDI::Simple -- but MIDI::Simple uses this
 
 $Debug = 0; # currently doesn't do anything
-$VERSION = '0.81';
+$VERSION = '0.82';
 
 # MIDI.pm doesn't do much other than 1) 'use' all the necessary submodules
 # 2) provide some publicly useful hashes, 3) house a few private routines
@@ -374,10 +375,11 @@ Copyright (c) 1998-2005 Sean M. Burke. All rights reserved.
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
 
-=head1 AUTHOR
+=head1 AUTHORS
 
 Sean M. Burke C<sburke@cpan.org>
 
+Darrell Conklin C<conklin@cpan.org> (from 2010)
 =cut
 
 ###########################################################################

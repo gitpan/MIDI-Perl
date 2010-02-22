@@ -1,12 +1,12 @@
 
-# Time-stamp: "2005-01-29 16:20:19 AST"
+# Time-stamp: "2010-02-21 12:55:45 conklin"
 require 5;
 package MIDI::Score;
 use strict;
 use vars qw($Debug $VERSION);
 use Carp;
 
-$VERSION = '0.81';
+$VERSION = '0.82';
 
 =head1 NAME
 
@@ -369,7 +369,8 @@ sub events_r_to_score_r {
 	if(!ref($_)) {
 	  ();
 	} else {
-	  $_ = [@$_]; # copy.
+# 0.82: the following must be declared local
+	  local $_ = [@$_]; # copy.
 	  $_->[1] = ($time += $_->[1]) if ref($_);
 	  
 	  if($_->[0] eq 'note_off'
@@ -377,16 +378,17 @@ sub events_r_to_score_r {
 		$_->[4] == 0) )
 	  { # End of a note
 	    # print "Note off : @$_\n";
-	    delete(
-		   $note{pack 'CC', @{$_}[2,3]}
-		  )->[2] += $time
-		    if exists $note{ pack 'CC', @{$_}[2,3] };
+# 0.82: handle multiple prior events with same chan/note.
+	      if ((exists $note{pack 'CC', @{$_}[2,3]}) && (@{$note{pack 'CC', @{$_}[2,3]}})) {
+		  shift(@{$note{pack 'CC', @{$_}[2,3]}})->[2] += $time;
+		  unless(@{$note{pack 'CC', @{$_}[2,3]}}) {delete $note{pack 'CC', @{$_}[2,3]};}
+	      }
 	    (); # Erase this event.
 	  } elsif ($_->[0] eq 'note_on') {
 	    # Start of a note
 	    $_ = [@$_];
 	    
-	    $note{ pack 'CC', @{$_}[2,3] } = $_;
+	    push(@{$note{ pack 'CC', @{$_}[2,3] }},$_);
 	    splice(@$_, 2, 0, -$time);
 	    $_->[0] = 'note';
 	    # ('note', Starttime, Duration, Channel, Note, Veloc)
@@ -401,8 +403,11 @@ sub events_r_to_score_r {
 
     #print "notes remaining on stack: ", scalar(values %note), "\n"
     #  if values %note;
-    foreach my $one (values %note) {
-      $one->[2] += $time;
+# 0.82: clean up pending events gracefully
+    foreach my $k (keys %note) {
+	foreach my $one (@{$note{$k}}) {
+	    $one->[2] += $time;
+	}
     }
     return(\@score, $time) if wantarray;
     return \@score;
@@ -450,6 +455,45 @@ sub dump_score {
   print ");\n";
   return;
 }
+
+###########################################################################
+
+=item MIDI::Score::quantize( $score_r )
+
+This takes a I<reference> to a score structure, performs a grid
+quantize on all events, returning a new score reference with new
+quantized events.  Two parameters to the method are: 'grid': the
+quantization grid, and 'durations': whether or not to also quantize
+event durations (default off).
+
+When durations of note events are quantized, they can get 0 duration.
+These events are I<not dropped> from the returned score, and it is the
+responsiblity of the caller to deal with them.
+
+=cut
+
+# new in 0.82!
+sub quantize {
+  my $score_r = $_[0];
+  my $options_r = ref($_[1]) eq 'HASH' ? $_[1] : {};
+  my $grid = $options_r->{grid};
+  if ($grid < 1) {carp "bad grid $grid in MIDI::Score::quantize!"; $grid = 1;}
+  my $qd = $options_r->{durations}; # quantize durations?
+  my $new_score_r = [];
+  my $n_event_r;
+  foreach my $event_r (@{$score_r}) {
+      my $n_event_r = [];
+      @{$n_event_r} = @{$event_r};
+      $n_event_r->[1] = $grid * int(($n_event_r->[1] / $grid) + 0.5);
+      if ($qd && $n_event_r->[0] eq 'note') {
+	  $n_event_r->[2] = $grid * int(($n_event_r->[2] / $grid) + 0.5);
+      }
+      push @{$new_score_r}, $n_event_r;
+  }
+  $new_score_r;
+}
+
+
 ###########################################################################
 
 =back
@@ -461,9 +505,11 @@ Copyright (c) 1998-2002 Sean M. Burke. All rights reserved.
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
 
-=head1 AUTHOR
+=head1 AUTHORS
 
-Sean M. Burke C<sburke@cpan.org>
+Sean M. Burke C<sburke@cpan.org> (until 2010)
+
+Darrell Conklin C<conklin@cpan.org> (from 2010)
 
 =cut
 

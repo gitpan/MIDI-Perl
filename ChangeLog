@@ -1,5 +1,23 @@
+
 Revision history for Perl suite MIDI-Perl
-                                        Time-stamp: "2005-01-29 16:05:31 AST"
+
+        
+                                Time-stamp: "2010-02-21 12:55:15 conklin"
+
+2010-02-14  Darrell Conklin  conklin@cpan.org
+
+	* maintainer -- DC has taken over as maintainer.  Thanks to SB for
+	his excellent module.
+
+	* Release 0.82
+	
+	* bug fix in Score.pm where events_r_to_score_r would destructively modify events
+
+	* bug fix in Score.pm, when presented with two simultaneous events
+	with the same note/channel, which led to unpredictable durations
+	of score events, sometimes negative.
+	
+	* added grid quantization (to Opus, and Score)
 
 2005-01-29  Sean M. Burke  sburke@cpan.org
 
