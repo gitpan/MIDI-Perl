@@ -13,7 +13,7 @@ use MIDI::Score;
 # Doesn't use MIDI::Simple -- but MIDI::Simple uses this
 
 $Debug = 0; # currently doesn't do anything
-$VERSION = '0.82';
+$VERSION = '0.83';
 
 # MIDI.pm doesn't do much other than 1) 'use' all the necessary submodules
 # 2) provide some publicly useful hashes, 3) house a few private routines
@@ -197,7 +197,7 @@ to see the contents of the hash.
  "Slap Bass 1", "Slap Bass 2", "Synth Bass 1", "Synth Bass 2",
 # Strings
  "Violin", "Viola", "Cello", "Contrabass",
- "Tremolo Strings", "Orchestral Strings", "Orchestral Strings", "Timpani",
+ "Tremolo Strings", "Pizzicato Strings", "Orchestral Strings", "Timpani",
 
 #48: Ensemble
  "String Ensemble 1", "String Ensemble 2", "SynthStrings 1", "SynthStrings 2",
@@ -377,7 +377,7 @@ modify it under the same terms as Perl itself.
 
 =head1 AUTHORS
 
-Sean M. Burke C<sburke@cpan.org>
+Sean M. Burke C<sburke@cpan.org> (until 2010)
 
 Darrell Conklin C<conklin@cpan.org> (from 2010)
 =cut

@@ -1,5 +1,5 @@
 
-# Time-stamp: "2005-01-29 16:24:17 AST"
+# Time-stamp: "2010-12-23 09:59:44 conklin"
 require 5.004;        # I need BER working right, among other things.
 package MIDI::Event;
 
@@ -10,7 +10,7 @@ use vars qw($Debug $VERSION @MIDI_events @Text_events @Nontext_meta_events
 use Carp;
 
 $Debug = 0;
-$VERSION = '0.81';
+$VERSION = '0.83';
 
 #First 100 or so lines of this module are straightforward.  The actual
 # encoding logic below that is scary, tho.

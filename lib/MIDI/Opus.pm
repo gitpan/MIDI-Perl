@@ -1,5 +1,5 @@
 
-# Time-stamp: "2010-02-21 12:55:27 conklin"
+# Time-stamp: "2010-12-23 10:00:01 conklin"
 require 5;
 package MIDI::Opus;
 use strict;
@@ -7,7 +7,7 @@ use vars qw($Debug $VERSION);
 use Carp;
 
 $Debug = 0;
-$VERSION = 0.82;
+$VERSION = 0.83;
 
 =head1 NAME
 
@@ -533,7 +533,7 @@ sub read_from_handle { # a method, surprisingly enough
 
   carp
     "Header in data from $fh says to expect $tracks_expected tracks, "
-    . "but only $track_count were found\n"
+    . "but $track_count were found\n"
     unless $tracks_expected == $track_count;
   carp "No tracks read in data from $fh\n" if $track_count == 0;
 

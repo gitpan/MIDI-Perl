@@ -1,12 +1,12 @@
 
-# Time-stamp: "2010-02-21 12:55:45 conklin"
+# Time-stamp: "2013-02-01 22:40:45 conklin"
 require 5;
 package MIDI::Score;
 use strict;
 use vars qw($Debug $VERSION);
 use Carp;
 
-$VERSION = '0.82';
+$VERSION = '0.83';
 
 =head1 NAME
 
@@ -493,6 +493,62 @@ sub quantize {
   $new_score_r;
 }
 
+###########################################################################
+
+=item MIDI::Score::skyline( $score_r )
+
+This takes a I<reference> to a score structure, performs skyline
+(create a monophonic track by extracting the event with highest pitch
+at unique onset times) on the score, returning a new score reference.
+The parameters to the method is: 'clip': whether durations of events
+are preserved or possibly clipped and modified.
+
+To explain this, consider the following (from Bach 2 part invention
+no.6 in E major):
+
+     |------e------|-------ds--------|-------d------|...
+|****--E-----|-------Fs-------|------Gs-----|...
+
+Without duration cliping, the skyline is E, Fs, Gs...
+
+With duration clipping, the skyline is E, e, ds, d..., where the
+duration of E is clipped to just the * portion above
+
+=cut
+
+# new in 0.83! author DC
+sub skyline {
+    my $score_r = $_[0];
+    my $options_r = ref($_[1]) eq 'HASH' ? $_[1] : {};
+    my $clip = $options_r->{clip};
+    my $new_score_r = [];
+    my %events = ();
+    my $n_event_r;
+    my ($typeidx,$stidx,$duridx,$pitchidx) = (0,1,2,4); # create some nicer event indices
+# gather all note events into an onset-index hash.  push all others directly into the new score.
+    foreach my $event_r (@{$score_r}) {
+	if ($event_r->[$typeidx] eq "note") {push @{$events{$event_r->[$stidx]}}, $event_r;}
+	else {push @{$new_score_r}, $event_r;}
+    }
+    my $loff = 0; my $lev = [];
+# iterate over increasing onsets
+    foreach my $onset (sort {$a<=>$b} (keys %events)) {
+        # find highest pitch at this onset
+        my $ev = (sort {$b->[$pitchidx] <=> $a->[$pitchidx]} (@{$events{$onset}}))[0];
+	if ($onset >= ($lev->[$stidx] + $lev->[$duridx])) {
+	    push @{$new_score_r}, $ev;
+	    $lev = $ev;
+	}
+	elsif ($clip) {
+	    if ($ev->[$pitchidx] > $lev->[$pitchidx]) {
+		$lev->[$duridx] = $ev->[$stidx] - $lev->[$stidx];
+		push @{$new_score_r}, $ev;
+		$lev = $ev;
+	    }
+	}
+    }
+    $new_score_r;
+}
 
 ###########################################################################
 

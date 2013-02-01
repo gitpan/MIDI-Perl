@@ -1,5 +1,5 @@
 
-# Time-stamp: "2005-01-29 16:32:14 AST"
+# Time-stamp: "2010-12-23 09:19:57 conklin"
 require 5;
 package MIDI::Simple;
 use MIDI;
@@ -14,7 +14,7 @@ use subs qw(&make_opus($\@) &write_score($$\@)
            );
 require Exporter;
 @ISA = qw(Exporter);
-$VERSION = '0.81';
+$VERSION = '0.83';
 $Debug = 0;
 
 @EXPORT = qw(
@@ -126,7 +126,7 @@ before .700 (but that was a I<looong> time ago).
  'wn' =>  4,     'dwn' => 6,    'ddwn' => 7,       'twn' => (8/3),
  'hn' =>  2,     'dhn' => 3,    'ddhn' => 3.5,     'thn' => (4/3),
  'qn' =>  1,     'dqn' => 1.5,  'ddqn' => 1.75,    'tqn' => (2/3),
- 'en' => .5,     'den' => .75,  'dden' => .75,     'ten' => (1/3),
+ 'en' => .5,     'den' => .75,  'dden' => .875,     'ten' => (1/3),
  'sn' => .25,    'dsn' => .375, 'ddsn' => .4375,   'tsn' => (1/6),
  # Yes, these fractions could lead to round-off errors, I suppose.
  # But note that 96 * all of these == a WHOLE NUMBER!!!!!

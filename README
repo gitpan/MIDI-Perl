@@ -1,5 +1,5 @@
 README for MIDI-Perl
-                                        Time-stamp: "2005-01-29 15:27:16 AST"
+                                        Time-stamp: "2010-12-23 09:15:20 conklin"
 
 			      MIDI-Perl
 
@@ -7,7 +7,7 @@ MIDI-Perl is a suite of Perl modules that allows you to read, compose,
 modify, and write MIDI files.  It is largely object-oriented, but if
 you follow the example code, you should be able to get along fine.
 
-See http://interglacial.comu/~sburke/pub/perl_midi/ for more info.
+See http://interglacial.com/~sburke/pub/perl_midi/ for more info.
 
 
 
@@ -60,8 +60,7 @@ folder.  Read the PODs with Shuck.
 SUPPORT
 
 Questions, bug reports, useful code bits, and suggestions for
-MIDI-Perl should just be sent to me at sburke@cpan.org
-
+MIDI-Perl should just be sent to me at CONKLIN@cpan.org
 
 
 AVAILABILITY
@@ -74,4 +73,5 @@ way to view CPAN.
 
 COPYRIGHT
 
-Copyright 1998+ by Sean M. Burke <sburke@cpan.org.
+Copyright 1998+ by Sean M. Burke sburke@cpan.org
+Copyright 2010+ by D. Conklin conklin@cpan.org

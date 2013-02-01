@@ -2,7 +2,21 @@
 Revision history for Perl suite MIDI-Perl
 
         
-                                Time-stamp: "2010-02-21 12:55:15 conklin"
+                                Time-stamp: "2013-02-01 15:40:53 conklin"
+
+2012-11-19  Darrell Conklin  conklin@cpan.org
+
+	* Release 0.83
+
+	* fixed GM patch 45 incorrect name: "Orchestral Strings"->"Pizzicato Strings"
+
+	* added more explanatory error message in Opus.pm (track_count)
+
+	* added a track->skyline() function
+	
+2010-12-23  Darrell Conklin  conklin@cpan.org
+
+	* fixed typo in %Lengths hash in Simple.pm
 
 2010-02-14  Darrell Conklin  conklin@cpan.org
 

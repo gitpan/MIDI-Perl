@@ -1,5 +1,5 @@
 
-# Time-stamp: "2005-01-29 16:29:42 AST"
+# Time-stamp: "2013-02-01 22:40:38 conklin"
 require 5;
 package MIDI::Track;
 use strict;
@@ -7,7 +7,7 @@ use vars qw($Debug $VERSION);
 use Carp;
 
 $Debug = 0;
-$VERSION = '0.81';
+$VERSION = '0.83';
 
 =head1 NAME
 
@@ -182,6 +182,24 @@ sub copy {
   $new->{'events'} = &MIDI::Event::copy_structure( $new->{'events'} )
     if $new->{'events'};
   return $new;
+}
+
+###########################################################################
+
+=item track->skyline({ ...options... })
+
+skylines the entire track.  Modifies the track.  See MIDI::Score for
+documentation on skyline
+
+=cut
+
+sub skyline {
+    my $track = shift;
+    my $options_r = ref($_[1]) eq 'HASH' ? $_[1] : {};
+    my $score_r = MIDI::Score::events_r_to_score_r($track->events_r);
+    my $new_score_r = MIDI::Score::skyline($score_r,$options_r);
+    my $events_r = MIDI::Score::score_r_to_events_r($new_score_r);
+    $track->events_r($events_r);
 }
 
 ###########################################################################
@@ -420,7 +438,9 @@ modify it under the same terms as Perl itself.
 
 =head1 AUTHOR
 
-Sean M. Burke C<sburke@cpan.org>
+Sean M. Burke C<sburke@cpan.org> (until 2010)
+
+Darrell Conklin C<conklin@cpan.org> (from 2010)
 
 =cut
 
